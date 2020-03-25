@@ -2,70 +2,63 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://godweiyang.com/2020/03/25/article-title/</loc>
+    <loc>https://CodingMarathon.github.io/about/index.html</loc>
     
-    <lastmod>2020-03-25T01:00:06.542Z</lastmod>
+    <lastmod>2020-03-25T02:53:24.494Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://godweiyang.com/2020/03/25/hello-world/</loc>
+    <loc>https://CodingMarathon.github.io/404.html</loc>
+    
+    <lastmod>2020-03-25T02:42:53.338Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://CodingMarathon.github.io/2020/03/25/myfirst-article/</loc>
+    
+    <lastmod>2020-03-25T02:01:14.246Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://CodingMarathon.github.io/2020/03/25/hello-world/</loc>
     
     <lastmod>2020-03-25T00:33:13.783Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://godweiyang.com/2020/02/16/sort-algorithms/</loc>
+    <loc>https://CodingMarathon.github.io/archives/index.html</loc>
     
     <lastmod>2020-03-11T11:02:25.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://godweiyang.com/404.html</loc>
+    <loc>https://CodingMarathon.github.io/categories/index.html</loc>
     
     <lastmod>2020-03-11T11:02:25.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://godweiyang.com/about/index.html</loc>
+    <loc>https://CodingMarathon.github.io/contact/index.html</loc>
     
     <lastmod>2020-03-11T11:02:25.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://godweiyang.com/archives/index.html</loc>
+    <loc>https://CodingMarathon.github.io/friends/index.html</loc>
     
     <lastmod>2020-03-11T11:02:25.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://godweiyang.com/categories/index.html</loc>
-    
-    <lastmod>2020-03-11T11:02:25.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://godweiyang.com/contact/index.html</loc>
-    
-    <lastmod>2020-03-11T11:02:25.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://godweiyang.com/friends/index.html</loc>
-    
-    <lastmod>2020-03-11T11:02:25.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://godweiyang.com/tags/index.html</loc>
+    <loc>https://CodingMarathon.github.io/tags/index.html</loc>
     
     <lastmod>2020-03-11T11:02:25.000Z</lastmod>
     
