@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://CodingMarathon.github.io/"/>
-  <updated>2020-03-25T02:01:14.246Z</updated>
+  <updated>2020-03-26T10:25:18.024Z</updated>
   <id>https://CodingMarathon.github.io/</id>
   
   <author>
@@ -17,11 +17,11 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>myfirst_article </title>
-    <link href="https://CodingMarathon.github.io/2020/03/25/myfirst-article/"/>
-    <id>https://CodingMarathon.github.io/2020/03/25/myfirst-article/</id>
-    <published>2020-03-25T02:00:25.000Z</published>
-    <updated>2020-03-25T02:01:14.246Z</updated>
+    <title>crf</title>
+    <link href="https://CodingMarathon.github.io/2020/03/26/crf/"/>
+    <id>https://CodingMarathon.github.io/2020/03/26/crf/</id>
+    <published>2020-03-26T10:22:49.000Z</published>
+    <updated>2020-03-26T10:25:18.024Z</updated>
     
     <summary type="html">
     
@@ -29,8 +29,31 @@
       
         
         
-          &lt;p&gt;@[TOC]&lt;/p&gt;
-&lt;h1 id=&quot;这是我写的第一个文章&quot;&gt;&lt;a href=&quot;#这是我写的第一个文章&quot; class=&quot;headerlink&quot;
+          &lt;p&gt;﻿@&lt;a href=&quot;目录&quot;&gt;toc&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&quot;0-前言&quot;&gt;&lt;a href=&quot;#0-前言&quot; class=&quot;headerlink&quot; title=&quot;0 前言&quot;&gt;&lt;/a&gt;0 前言&lt;/h1&gt;&lt;p&gt;​        条件随机场（conditional
+        
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>hmm</title>
+    <link href="https://CodingMarathon.github.io/2020/03/26/hmm/"/>
+    <id>https://CodingMarathon.github.io/2020/03/26/hmm/</id>
+    <published>2020-03-26T10:20:39.000Z</published>
+    <updated>2020-03-26T10:21:53.052Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;@&lt;a href=&quot;目录&quot;&gt;TOC&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&quot;1-隐马尔科夫模型&quot;&gt;&lt;a href=&quot;#1-隐马尔科夫模型&quot; class=&quot;headerlink&quot; title=&quot;1 隐马尔科夫模型&quot;&gt;&lt;/a&gt;1
         
       
     

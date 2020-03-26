@@ -1,0 +1,1594 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="crf, BUAA NLP DeepLearning Knowledge Graph">
+    <meta name="baidu-site-verification" content="YBVxcnPira">
+    <meta name="description" content="﻿@toc
+0 前言​        条件随机场（conditional random field，CRF）是给定一组输入随机变量条件下另一组输出随机变量的条件概率分布模型，其特点是假设输出随机变量构成马尔科夫随机场。本文主要讨论它在标注问">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>crf | CodingMarathon</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+    <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?46e79e71af0709a5b9106bf20cecc493";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+    
+        <script>
+            (function(){
+                var bp = document.createElement('script');
+                var curProtocol = window.location.protocol.split(':')[0];
+                if (curProtocol === 'https') {
+                    bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+                }
+                else {
+                    bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+                }
+                var s = document.getElementsByTagName("script")[0];
+                s.parentNode.insertBefore(bp, s);
+            })();
+        </script>
+    
+
+    <script>
+        (function(){
+        var src = "https://jspassport.ssl.qhimg.com/11.0.1.js?d182b3f28525f2db83acfaaf6e696dba";
+        document.write('<script src="' + src + '" id="sozz"><\/script>');
+        })();
+    </script>
+
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">CodingMarathon</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/friends" class="waves-effect waves-light">
+            
+            <i class="fa fa-address-book"></i>
+            
+            <span>友情链接</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/contact" class="waves-effect waves-light">
+            
+            <i class="fa fa-comments"></i>
+            
+            <span>留言板</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">CodingMarathon</div>
+        <div class="logo-desc">
+            
+            主题拷贝自https://github.com/hexojs/hexo/，目前没时间更改，进站只需看博客就行！
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        <li>
+            <a href="/friends" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-address-book"></i>
+                
+                友情链接
+            </a>
+        </li>
+        
+        <li>
+            <a href="/contact" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-comments"></i>
+                
+                留言板
+            </a>
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/CodingMarathon/hexo-matery-modified" class="waves-effect waves-light" target="_blank">
+                <i class="fa fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/CodingMarathon/hexo-matery-modified" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        crf
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        <span class="chip bg-color">无标签</span>
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-03-26
+                </div>
+
+                <div class="post-author info-break-policy">
+                    <i class="fa fa-user-o fa-fw"></i>作者:&nbsp;&nbsp;
+                    
+                    CodingMarathon
+                    
+                </div>
+
+                
+                
+                <div class="info-break-policy">
+                    <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    9.9k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    45 分
+                </div>
+                
+                
+
+                
+                <div id="busuanzi_container_page_pv" class="info-break-policy">
+                    <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                    <span id="busuanzi_value_page_pv"></span>
+                </div>
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>﻿@<a href="目录">toc</a></p>
+<h1 id="0-前言"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言</h1><p>​        条件随机场（conditional random field，CRF）是给定一组输入<strong>随机变量</strong>条件下另一组输出<strong>随机变量</strong>的条件概率分布模型，其特点是假设输出随机变量构成马尔科夫随机场。本文主要讨论它在标注问题上的应用，因此主要讲<strong>线性链（linear chain）条件随机场</strong>，这时问题变成了由输入序列对输出序列预测的判别模型，形式为对数线性模型，学习模型参数的方法通常是极大似然估计或者正则化的极大似然估计。</p>
+<p>​        本文参考李航老师的《统计学习方法》,加上自己的理解。</p>
+<h1 id="1-马尔科夫随机场"><a href="#1-马尔科夫随机场" class="headerlink" title="1 马尔科夫随机场"></a>1 马尔科夫随机场</h1><p>​        概率无向图模型（probabilistic undirected graphical model），又称为马尔科夫随机场（Markov random field），是一个可以由无向图表示的联合概率分布。</p>
+<h2 id="1-1-概率图模型的定义"><a href="#1-1-概率图模型的定义" class="headerlink" title="1.1 概率图模型的定义"></a>1.1 概率图模型的定义</h2><p>​         图是由节点及连接节点的边组成的集合。节点和边分别记作$v$和$e$，节点和边的集合分别记作$V$和$E$，图记作$G=(V,E)$。无向图是指边没有方向的图，有向图是指边有方向的图。<br><img src="https://img-blog.csdnimg.cn/20200323164917172.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>        概率图模型是用图来表示<strong>概率分布</strong>，设有联合概率分布$P(\boldsymbol{Y})$，$\boldsymbol{Y}$是一组随机变量。用图$G=(V,E)$来表示概率分布$P(\boldsymbol{Y})$。在图$G$中，节点$v \in V $表示一个随机变量$Y_v$，则$\boldsymbol{Y}=(Y_v)_{v \in V}$；边$e \in E$表示随机变量之间的概率依赖关系。常用的概率图模型分为两类：</p>
+<ul>
+<li>有向图：贝叶斯网络。信念网络</li>
+<li>无向图：马尔科夫随机场、马尔科夫网络  </li>
+</ul>
+<p><strong>概率图模型是一门很深的学问，在大学里面也是专门的一门课来讲。这篇文章仅仅是代表我自己的认知，也仅仅限于标注模型。</strong><br><img src="https://img-blog.csdnimg.cn/2020032316495293.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>现在已经用图来表示概率分布，那怎么根据图来计算概率分布呢？</p>
+<ol>
+<li><p>概率有向图模型的联合概率：</p>
+<p>概率有向图模型的联合概率一般按照如下所示的公式求解：</p>
+</li>
+</ol>
+<pre><code>$$
+P(X_1,X_2,...,X_N)=\prod\limits_{i=1}^NP(X_i|\pi(X_i))
+$$
+其中， $\pi(X_i)$是$X_i$的所有父节点，**按理说应该是$P(\boldsymbol{Y})$来表示概率，但是画图时用的是$X$，这是一个小错误**。
+![在这里插入图片描述](https://img-blog.csdnimg.cn/2020032316502081.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70#pic_center)
+ 由图可得：</code></pre><p>$$<br>P(X_1,X_2,…,X_5)=P(X_1)P(X_2|X_1)P(X_3|X_2)P(X_4|X_2)P(X_5|X_3,X_4)​<br>$$</p>
+<ol start="2">
+<li><p>概率无向图模型的联合概率：</p>
+<p>无向图一般就指的是马尔科夫网路，无向图的无向性导致不能用条件概率参数化表示联合概率，<em><u>而是需要从一组条件独立的原则中找出一系列局部函数的乘积来表示联合概率。</u></em></p>
+</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/20200323165635475.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+<p>如果无向图是一个很大的图，可以使用<strong>因子分解</strong>将$P(\boldsymbol{X})$写成若干个联合概率的乘积，所以问题来了，怎么分解呢？将图分解为若干个“小团”，注意每一个团必须是<strong>最大团</strong>（定义在后面介绍），用$Q\in C$表示，$C$是最大团的集合。下面给出$P(\boldsymbol{X})$的公式，<strong>也叫因子分解式</strong>:<br>$$<br>P(\boldsymbol{X})=\frac{1}{Z}\prod\limits_{Q \in C}\psi_Q(\boldsymbol{x}_Q)<br>$$<br>其中，$Z=\sum\limits_\boldsymbol{x}\prod\limits_{Q\in C}\psi_Q(\boldsymbol{x_Q})$为规范化因子，是为了保证概率之和为1，类似于softmax。因为在计算上式时并<strong>不是按照概率</strong>来计算的，而是定义了<strong>特征函数</strong>(见后文)，数值代表不了概率。在实际应用中，精确计算$Z$是很困难的，但许多任务往往并不需要获得$Z$的精确值。$\psi_Q(\boldsymbol{x_Q})$是一个最大团$Q$所包含的<strong>所有随机变量</strong>的联合概率，也称作<strong>势函数</strong>，这个函数必须是非负实数函数，一般取指数函数：<br>$$<br>\psi_Q(\boldsymbol{x}_Q)=\exp\{-E(Y_Q)\}<br>$$</p>
+<h2 id="1-2-马尔科夫随机场"><a href="#1-2-马尔科夫随机场" class="headerlink" title="1.2 马尔科夫随机场"></a>1.2 马尔科夫随机场</h2><p>先给一个简单的马尔科夫随机场。<br><img src="https://img-blog.csdnimg.cn/2020032316533986.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+<ol>
+<li><p><strong>团的定义</strong>：</p>
+<p>对于图中节点的一个子集，若任意子集中任意两个节点间都有边连接，则称该节点子集为一个“团”（clique）。若在一个团中加入任何一个节点都不再形成团，则称这个团为“最大团”。最小的最大团只有两个节点，如上图中的$\{x_2,x_4\}$。</p>
+<p>团：$\{x_1,x_2\},\{x_1,x_3\},\{x_2,x_4\},\{x_2,x_5\},\{x_2,x_6\},\{x_3,x_5\},\{x_5,x_6\},\{x_2,x_5,x_6\}$</p>
+<p>最大团：$\{x_1,x_2\},\{x_1,x_3\},\{x_2,x_4\},\{x_3,x_5\},\{x_2,x_5,x_6\}$</p>
+</li>
+</ol>
+<p>按照上述的公式求解概率，只需用到最大团。原因：若$Q$不是最大团，则它一定会被一个另一个最大团$Q^<em>$完全包含，即$Q\in Q^</em>$，这意味着$Q$包含的变量之间的关系不仅体现在势函数$\psi_Q$中，还体现在$\psi_{Q^<em>}$中，这样就乱套了，所以联合概率<em>*必须使用最大团</em></em>来定义。</p>
+<p>上述这个图的联合概率为：<br>$$<br>P(\boldsymbol{X})=\frac{1}{Z}\psi_{12}(x_1,x_2)\psi_{13}(x_1,x_3)\psi_{24}(x_2,x_4)\psi_{35}(x_3,x_5)\psi_{256}(x_2,x_5,x_6)<br>$$<br>其中，$\psi_{256}(x_2,x_5,x_6)$定义在最大团$\{x_2,x_5,x_6\}$上，由于它的存在不需要为团$\{x_2,x_5\},\{x_2,x_6\},\{x_5,x_6\}$构建势函数。</p>
+<p>​        在马尔科夫随机场中，还需要得到“条件独立性”，即马尔科夫性，同样借助分离的概念。马尔科夫性是保证或者判断概率图是否为概率无向图的条件，一共三点内容：</p>
+<ul>
+<li><p>全局马尔科夫性</p>
+</li>
+<li><p>局部马尔科夫性</p>
+</li>
+<li><p>成对马尔科夫性</p>
+<p>注：这个只作为判断一个概率图是不是马尔科夫随机场，可以不用重点关注。</p>
+</li>
+</ul>
+<ol start="2">
+<li><p><strong>全局马尔科夫性</strong>：</p>
+<p>分离集的定义：若从节点集A的节点到B中的节点都必须经过节点集C中的节点，则称节点集A和B被节点集C分离，C成为分离集。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200323165359343.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+<p>全局马尔科夫性：给定两个变量子集的分离集，则这两个变量子集条件独立。记作：<br>$$<br>P(x_A,x_B|x_C)=P(x_A|x_C)P(x_B|x_C)<br>$$<br>相关证明可以查看《机器学习_周志华》</p>
+</li>
+<li><p><strong>局部马尔科夫性</strong>：</p>
+<p>给定某变量的邻接变量，则该变量条件独立于其他变量，设$W$是与v有边连接的所有节点集合，$O$是$v$，$W$以外的其他所有节点集合，则：<br>$$<br>P(X_V,X_O|X_W)=P(X_V|X_W)P(X_O|X_W)<br>$$<br>若$P(X_O|X_W)&gt;0$，则有：<br>$$<br>P(X_V|X_W)=P(X_V|X_W,X_O)<br>$$</p>
+</li>
+<li><p><strong>成对马尔科夫性</strong>：</p>
+<p>设$u$和$v$是无向图中的任意两个没有边连接的节点，其他所有节点集合为$O$，成对马尔科夫性是指给定随机变量组$X_O$的条件下随机变量$X_u$和$X_v$是条件独立的，即：<br>$$<br>P(X_u,X-v|X_O)=P(X_u|X_O)P(X_v|X_O)<br>$$</p>
+</li>
+</ol>
+<p>针对上述的定义，现在给出概率无向图模型的定义：</p>
+<p>​        <strong>设有联合概率分布$P(\boldsymbol{X})$，由无向图$G=(V,E)$表示，在途中，节点表示随机变量，边表示随机变量之间的依赖关系。如果连个概率分布满足成对、局部和全局马尔科夫性，就称此联合概率分布为概率无向图模型，或马尔科夫随机场。</strong></p>
+<h1 id="2-条件随机场"><a href="#2-条件随机场" class="headerlink" title="2 条件随机场"></a>2 条件随机场</h1><p>​        条件随机场是给定随机变量$\boldsymbol{X}$条件下，随机变量$\boldsymbol{Y}$的马尔科夫随机场。这里主要介绍定义在线性链上的特殊的条件随机场，成为线性链条件随机场。注意条件随机场是<strong>判别模型</strong>，是对条件概率$P(\boldsymbol{Y}|\boldsymbol{X})$进行建模。线性链条件随机场可以用于标注问题，这时，在条件概率模型$P(\boldsymbol{Y}|\boldsymbol{X})$中，$\boldsymbol{Y}$是输出变量，表示标记序列，也可以称为状态序列，$\boldsymbol{X}$是输入变量，表示需要标注的观测序列。在学习模型参数时，利用训练数据及通过极大似然估计或正则化的极大似然估计得到条件概率模型$\hat{P}(\boldsymbol{Y}|\boldsymbol{X})$；预测时，对于给定的输入序列$\boldsymbol{x}$，求出条件概率$\hat{P}(\boldsymbol{y}|\boldsymbol{x})$最大的输出序列$\hat{\boldsymbol{y}}$。</p>
+<h2 id="2-1-条件随机场的定义"><a href="#2-1-条件随机场的定义" class="headerlink" title="2.1 条件随机场的定义"></a>2.1 条件随机场的定义</h2><p>​        <strong>定义</strong>：设$\boldsymbol{X}$与$\boldsymbol{Y}$是随机变量，$P(\boldsymbol{Y}|\boldsymbol{X})$是在给定$\boldsymbol{X}$的条件下$\boldsymbol{Y}$的条件概率分布，若随机变量$\boldsymbol{Y}$构成了一个由无向图$G=(V,E)$表示的马尔科夫随机场，即<br>$$<br>P(Y_v|X,Y_w,w\neq v)=P(Y_v|X,Y_w,w \sim v)<br>$$<br>对任意节点$v$成立，则称条件概率分布$P(\boldsymbol{Y}|\boldsymbol{X})$为条件随机场，其中$w\neq v$表示节点$v$以外的所有节点，$w \sim v$表示在图中与节点$v$有边连接的所有节点$w$，$Y_w,Y_v,Y_u$是与节点对应的随机变量。</p>
+<p>​        在定义中并没有要求$\boldsymbol{X}$与$\boldsymbol{Y}$具有想听的结构，现实中，一般假设$\boldsymbol{X}$与$\boldsymbol{Y}$有$\color{red}相同的图结构$，本文也只考虑无向图为下图所示的线性链的情况，用符号表示为：<br>$$<br>G=(V=\{1,2,3,…,n\},\quad E=\{(i,i+1)\})<br>$$<br><img src="https://img-blog.csdnimg.cn/20200323165429546.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>​        在此情况下，最大团集合就是两个相邻的节点的集合。</p>
+<p><strong>线性链条件随机场的定义</strong>：设$\boldsymbol{X}=(X_1,X_2,X_3,…,X_n),\boldsymbol{Y}=(Y_1,Y_2,Y_3,…,Y_n)$均为线性链表示的随机变量序列，若在给定随机变量序列$\boldsymbol{X}$的条件下，随机变量序列$\boldsymbol{Y}$的条件概率分布$P(\boldsymbol{Y}|\boldsymbol{X})$构成条件随机场，即满足马尔科夫性：<br>$$<br>P(Y_i|\boldsymbol{X},Y_1,Y_2,..,Y_{i-1},Y_{i+1},…,Y_n)=P(Y_i|\boldsymbol{X},Y_{i-1},Y_{i+1})<br>$$<br>则称$P(\boldsymbol{Y}|\boldsymbol{X})$为线性链条件随机场，可以看出，$Y_i$<strong>只与观测序列当前值和前后状态相关</strong>。在标注问题中，$\boldsymbol{Y}$是输出变量，表示标记序列，也可以称为状态序列，$\boldsymbol{X}$是输入变量，表示需要标注的观测序列。</p>
+<p>​        这里引用博文<a href="https://blog.csdn.net/zhoubl668/article/details/7786290" target="_blank" rel="noopener">随机场</a>中的一个例子：</p>
+<pre class="line-numbers language-txt"><code class="language-txt">随机场包含两个要素：位置（site），相空间（phase space）。当给每一个位置中按照某种分布随机赋予相空间的一个值之后，其全体就叫做随机场。我们不妨拿种地来打个比方。“位置”好比是一亩亩农田； “相空间”好比是种的各种庄稼。我们可以给不同的地种上不同的庄稼，这就好比给随机场的每个“位置”，赋予相空间里不同的值。所以，俗气点说，随机场就是在哪块地里种什么庄稼的事情。
+好了，明白了上面两点，就可以讲马尔可夫随机场了。还是拿种地打比方，如果任何一块地里种的庄稼的种类仅仅与它邻近的地里种的庄稼的种类有关，与其它地方的庄稼的种类无关，那么这些地里种的庄稼的集合，就是一个马尔可夫随机场。
+马尔可夫随机场，描述了具有某种特性的集合。拿种地打比方，如果任何一块地里种的庄稼的种类仅仅与它邻近的地里种的庄稼的种类有关，与其它地方的庄稼的种类无关，那么这些地里种的庄稼的集合，就是一个马尔可夫随机场。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h2 id="2-2-条件随机场的参数化形式"><a href="#2-2-条件随机场的参数化形式" class="headerlink" title="2.2 条件随机场的参数化形式"></a>2.2 条件随机场的参数化形式</h2><p>​        根据前面介绍的概率无向图模型的因子分解式，线性链条件随机场的各因子是定义在相邻两个节点上的函数。设$P(\boldsymbol{Y}|\boldsymbol{X})$为线性链条件随机场，则在随机变量$\boldsymbol{X}$取值为$x$的条件下，随机变量$\boldsymbol{Y}$取值为$y$的条件概率具有如下形式：<br>$$<br>\begin{aligned}<br>P(y|x)&amp;=\frac{1}{Z(x)}\prod \limits_Q\psi_Q(x,y)\<br>&amp;=\frac{1}{Z(x)}\exp{\big(\sum\limits_{i,k}\lambda_kt_k(y_{i-1},y_i,x,i)+\sum\limits_{i,l}\mu_ls_l(y_i,x,i)\big)}<br>\end{aligned}<br>$$<br>其中，<br>$$<br>Z(x)=\sum\limits_y\exp{\big(\sum\limits_{i,k}\lambda_kt_k(y_{i-1},y_i,x,i)+\sum\limits_{i,l}\mu_ls_l(y_i,x,i)\big)}<br>$$<br>$t_k$和$s_l$是特征函数，$\lambda_k$和$\mu_l$是对应的权值，$Z(x)$是规范化因子，求和是在所有可能的输出序列上进行的。</p>
+<p><strong>推导过程</strong>（一定要看下面的过程，可以帮助你很好理解）：</p>
+<p>上文介绍的概率无向图模型只有$X$一种随机变量，现在图中有$X,Y$两种随机变量，所以$P(X)=\frac{1}{Z}\prod\limits_Q\psi_Q(X_Q)$变成：<br>$$<br>\begin{aligned}<br>P(X,Y)&amp;=\frac{1}{Z}\prod\limits_Q\psi_Q(X_Q,Y_Q)\<br>&amp;=\frac{\prod\limits_Q\psi_Q(X_Q,Y_Q)}{\sum\limits_{X,Y}\prod\limits_Q\psi_Q(X_Q,Y_Q)}\<br>则：\<br>P(x,y)&amp;=\frac{\prod\limits_Q\psi_Q(x_Q,y_Q)}{\sum\limits_{x,y}\prod\limits_Q\psi_Q(x_Q,y_Q)}<br>\end{aligned}<br>$$</p>
+<p>令$Z(x)=\sum\limits_y\prod\limits_Q\psi_Q(x_Q,y_Q)$，在归一化的时候，只需对每种$x$求一个归一化因子<br>$$<br>P(y|x)=\frac{1}{Z(x)}\prod \limits_Q\psi_Q(x_Q,y_Q)<br>$$<br>根据线性链条件随机场的定义，对于每一个因子，有两种情况：</p>
+<ol>
+<li>因子处于两个输出序列上，和当前位置的观测，以及前一个状态有关，还要对每一个对应的特征求连积$\psi_Q(x_Q,y_Q)=\psi_Q(y_{i-1},y_i,x,i)=\exp(\lambda_1t_1(y_{i-1},y_i,x,i))\exp(\lambda_2t_2(y_{i-1},y_i,x,i))···\exp(\lambda_kt_k(y_{i-1},y_i,x,i))=\exp(\sum\limits_k\lambda_kt_k(y_{i-1},y_i,x,i))$</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/2020032316552818.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+<ol start="2">
+<li><p>因子处于观测序列和输出序列之间，和当前位置的观测有关，还要对每一个对应的特征求连积$\psi_Q(x_Q,y_Q)=\psi_Q(y_i,x,i)=\exp(\mu_1s_1(y_i,x,i))\exp(\mu_2s_2(y_i,x,i))···\exp(\mu_ls_l(y_i,x,i))=\exp(\sum\limits_l\mu_ls_l((y_i,x,i))$</p>
+<p><img src="https://img-blog.csdnimg.cn/20200323165541835.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+</li>
+</ol>
+<p>则：$\psi_Q(x_Q,y_Q)=\exp(\sum\limits_k\lambda_kt_k(y_{i-1},y_i,x,i)+\sum\limits_l\mu_ls_l((y_i,x,i))$</p>
+<p>对每一个因子求连积，即对每一个位置$i$求乘积，对指数来说是求和：<br>$$<br>\begin{aligned}<br>P(y|x)&amp;=\frac{1}{Z(x)}\prod \limits_Q\psi_Q(x_Q,y_Q)\<br>&amp;=\frac{1}{Z(x)}\exp{\big(\sum\limits_{i,k}\lambda_kt_k(y_{i-1},y_i,x,i)+\sum\limits_{i,l}\mu_ls_l(y_i,x,i)\big)}\<br>&amp;=\frac{\exp{\big(\sum\limits_{i,k}\lambda_kt_k(y_{i-1},y_i,x,i)+\sum\limits_{i,l}\mu_ls_l(y_i,x,i)\big)}}{\sum\limits_y\exp{\big(\sum\limits_{i,k}\lambda_kt_k(y_{i-1},y_i,x,i)+\sum\limits_{i,l}\mu_ls_l(y_i,x,i)\big)}}<br>\end{aligned}<br>$$<br>定义特征的原因：根据<strong>最大熵原则</strong>，希望找到一个符合所有边缘分布，同时使得熵达到最大的模型，这个模型就是指数函数，每一个边缘分布对应指数模型中的一个特征。最大熵会在后序博文给出。</p>
+<ul>
+<li>$t_k$是定义在边上的特征函数，称为转移特征，依赖于当前位置和前一个位置，是人为定义的特征；</li>
+<li>$s_l$是定义在边上的特征函数，称为状态特征，依赖于当前位置，是人为定义的特征；</li>
+<li>$t_k,s_l$是都依赖于位置，是局部特征函数，通常取值为1或0；</li>
+<li>条件随机场完全由特征函数$t_k,s_l$和对应的权值$\lambda_k$，$\mu_l$确定。</li>
+</ul>
+<h2 id="2-3-条件随机场的例子"><a href="#2-3-条件随机场的例子" class="headerlink" title="2.3 条件随机场的例子"></a>2.3 条件随机场的例子</h2><p>​        设有一标注问题：输入观测序列为$\boldsymbol{X}=(X_1,X_2,X_3)$，输出标记序列为$\boldsymbol{Y}=(Y_1,Y_2,Y_3)$，$Y_1,Y_2,Y_3$取值空间为$\{1,2\}$。<strong>==假设==特征函数</strong>$t_k,s_l$和对应的权值$\lambda_k$，$\mu_l$如下：<br>$$<br>t_1=t_1(y_{i-1}=1,y_i=2,x,i),\quad i=2,3,\quad \lambda_1=1<br>$$<br>这表示当当前位置$y$取值为2，上一位置为1，则特征函数$t$取值为1，取值为0的条件省略，即：<br>$$<br>t_1(y_{i-1}=1,y_i=2,x,i)=\begin{cases}1,&amp;  y_{i-1}=1,y_i=2,x,i,(i=2,3)\<br>0,&amp; 其他\end{cases}<br>$$<br><img src="https://img-blog.csdnimg.cn/2020032316571777.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+<p>一共有5个特征函数$t$，4个特征函数$s$。</p>
+<p>对给定的观测序列$x$，求标记序列为$y=(y_1,y_2,y_3)=(1,2,2)$的非规范化条件概率，也就是没有除以规范化因子的条件概率，即:</p>
+<p>$\exp{\big(\sum\limits_{i,k}\lambda_kt_k(y_{i-1},y_i,x,i)+\sum\limits_{i,l}\mu_ls_l(y_i,x,i)\big)}$  </p>
+<p>解：</p>
+<p>​        根据因子分解式：<br>$$<br>\begin{aligned}<br>P(y|x)&amp;\propto\exp{\big(\sum\limits_{i,k}\lambda_kt_k(y_{i-1},y_i,x,i)+\sum\limits_{i,l}\mu_ls_l(y_i,x,i)\big)}\<br>&amp;\propto \exp{[\sum\limits_{k=1}^5\lambda_k\sum\limits_{i=2}^3t_k(y_{i-1,y_i,x,i})+\sum\limits_{l=1}^4\mu_l\sum\limits_{i=1}^3s_l(y_i,x,i)}]<br>\end{aligned}<br>$$<br>计算过程：</p>
+<p>当$k=1$时：<br>$$<br>\begin{aligned}<br>\sum\limits_{i=2}^3t_1(y_{i-1,y_i,x,i})&amp;=t_1(y_1=1,y_2=2,x,i=2)+t_1(y_2=2,y_3=2,x,i=3)\<br>&amp;=1+0=1<br>\end{aligned}<br>$$<br>当$k=2$时：<br>$$<br>\begin{aligned}<br>\sum\limits_{i=2}^3t_2(y_{i-1,y_i,x,i})&amp;=t_2(y_1=1,y_2=2,x,i=2)+t_2(y_2=2,y_3=2,x,i=3)\<br>&amp;=0+0=0<br>\end{aligned}<br>$$<br>当$k=3$时：<br>$$<br>\begin{aligned}\sum\limits_{i=2}^3t_3(y_{i-1,y_i,x,i})&amp;=t_3(y_1=1,y_2=2,x,i=2)+t_3(y_2=2,y_3=2,x,i=3)\\&amp;=0+0=0\end{aligned}<br>$$<br>当$k=4$时：<br>$$<br>\begin{aligned}\sum\limits_{i=2}^3t_4(y_{i-1,y_i,x,i})&amp;=t_4(y_1=1,y_2=2,x,i=2)+t_4(y_2=2,y_3=2,x,i=3)\\&amp;=0+0=0\end{aligned}<br>$$<br>当$k=5$时：<br>$$<br>\begin{aligned}\sum\limits_{i=2}^3t_5(y_{i-1,y_i,x,i})&amp;=t_5(y_1=1,y_2=2,x,i=2)+t_5(y_2=2,y_3=2,x,i=3)\\&amp;=0+1=1\end{aligned}<br>$$<br>所以：<br>$$<br>\begin{aligned}<br>\sum\limits_{k=1}^5\lambda_k\sum\limits_{i=2}^3t_k(y_{i-1,y_i,x,i})&amp;=\lambda_1\sum\limits_{i=2}^3t_1(y_{i-1,y_i,x,i})+\lambda_5\sum\limits_{i=2}^3t_5(y_{i-1,y_i,x,i})\<br>&amp;=1\times 1+0.2\times 1\<br>&amp;=1.2<br>\end{aligned}<br>$$<br>同理：</p>
+<p>当$l=1$时：<br>$$<br>\begin{aligned}<br>\sum\limits_{i=1}^3s_l(y_i,x,i)&amp;=s_1(y_1=1,x,i=1)+s_1(y_2=2,x,i=2)+s_1(y_3=2,x,i=3)\<br>&amp;=1+0+0\<br>&amp;=1<br>\end{aligned}<br>$$<br>当$l=2$时：<br>$$<br>\begin{aligned}\sum\limits_{i=1}^3s_l(y_i,x,i)&amp;=s_2(y_1=1,x,i=1)+s_2(y_2=2,x,i=2)+s_2(y_3=2,x,i=3)\<br>&amp;=0+1+0\<br>&amp;=1\end{aligned}<br>$$<br>当$l=3$时：<br>$$<br>\begin{aligned}\sum\limits_{i=1}^3s_l(y_i,x,i)&amp;=s_3(y_1=1,x,i=1)+s_3(y_2=2,x,i=2)+s_3(y_3=2,x,i=3)\<br>&amp;=0+0+0\<br>&amp;=0<br>\end{aligned}<br>$$<br>当$l=4$时：<br>$$<br>\begin{aligned}<br>\sum\limits_{i=1}^3s_l(y_i,x,i)&amp;=s_4(y_1=1,x,i=1)+s_4(y_2=2,x,i=2)+s_4(y_3=2,x,i=3)\<br>&amp;=0+0+1\<br>&amp;=1<br>\end{aligned}<br>$$<br>所以：<br>$$<br>\begin{aligned}<br>\sum\limits_{l=1}^4\mu_l\sum\limits_{i=1}^3s_l(y_i,x,i)&amp;=\mu_1s_1+\mu_2s_2+\mu_4s_4\<br>&amp;=1\times 1+0.5\times 1+0.5\times 1\<br>&amp;=2<br>\end{aligned}<br>$$<br>故：<br>$$<br>\begin{aligned}<br>P(y|x)&amp;\propto\exp{\big(\sum\limits_{i,k}\lambda_kt_k(y_{i-1},y_i,x,i)+\sum\limits_{i,l}\mu_ls_l(y_i,x,i)\big)}\<br>&amp;\propto \exp{[\sum\limits_{k=1}^5\lambda_k\sum\limits_{i=2}^3t_k(y_{i-1,y_i,x,i})+\sum\limits_{l=1}^4\mu_l\sum\limits_{i=1}^3s_l(y_i,x,i)}]\<br>&amp;\propto\exp(1.2+2)=\exp(3.2)<br>\end{aligned}<br>$$</p>
+<h2 id="2-4-条件随机场的简化形式"><a href="#2-4-条件随机场的简化形式" class="headerlink" title="2.4 条件随机场的简化形式"></a>2.4 条件随机场的简化形式</h2><p>​        条件随机场还可以由简化形式表示.注意到条件随机场因子分解式中，同一特征在各个位置都有定义，可以对同一个特征在各个位置求和，将局部特征函数转化为一个全局特征函数，这样就可以将条件随机场写成权值向量和特征向量的内积形式，即条件随机场的简化形式。</p>
+<p>​        为简便起见，首先将转移特征和状态特征及其权值用统一的符号表示，设有$K_1$个转移特征，$K_2$个状态特征，$K＝K_1＋K_2$，记<br>$$<br>f_k(y_{i-1},y_i,x,i)=\begin{cases}t_k(y_{i_1},y_i,x,i),&amp;k=1,2,..,K_1\<br>s_l(y_i,x,i),&amp;k=K_1+l;\quad l=1,2,…,K_2<br>\end{cases}<br>$$<br>然后，对转移与状态特征在各个位置$i$求和，记作：<br>$$<br>f_k(y,x)=\sum\limits_{i=1}^nf_k(y_{i-1},y_i,x,i),\quad k=1,2,…,K<br>$$<br>用$w_k$表示特征$f_k(y,x)$的权值，即：<br>$$<br>w_k=\begin{cases}\lambda_k,&amp;k=1,2,…,K_1\<br>\mu_l,&amp;k=K1+l;\quad l=1,2,…,K_2<br>\end{cases}<br>$$<br>于是，条件随机场就可以表示成：<br>$$<br>\begin{aligned}<br>P(y|x)&amp;=\frac{1}{Z(x)}\exp{\sum\limits_{k=1}^Kw_kf_k(y,x)}\<br>Z(x)&amp;=\sum\limits_y\exp{\sum\limits_{k=1}^Kw_kf_k(y,x)}<br>\end{aligned}<br>$$<br>若以$\boldsymbol{w}$表示权值向量，即$\boldsymbol{w}=(w_1,w_2,…,w_k)^T$，以$F(\boldsymbol{y},\boldsymbol{x})$来表示全局特征向量，即$F(\boldsymbol{y},\boldsymbol{x})=(f_1(\boldsymbol{y},\boldsymbol{x}),f_2(\boldsymbol{y},\boldsymbol{x}),…,f_k(\boldsymbol{y},\boldsymbol{x}))^T$</p>
+<p>则条件随机场可以写成向量$\boldsymbol{w}$与$F(\boldsymbol{y},\boldsymbol{x})$的内积的形式：<br>$$<br>\begin{aligned}<br>P(y|x)&amp;=\frac{1}{Z(x)}\exp{(\boldsymbol{w}\cdot F(\boldsymbol{y},\boldsymbol{x}))}\<br>Z(x)&amp;=\sum\limits_y\exp{(\boldsymbol{w}\cdot F(\boldsymbol{y},\boldsymbol{x}))}<br>\end{aligned}<br>$$</p>
+<p>符号“$\cdot$”点积表示对应元素相乘后再相加。</p>
+<h2 id="2-5-条件随机场的矩阵形式"><a href="#2-5-条件随机场的矩阵形式" class="headerlink" title="2.5 条件随机场的矩阵形式"></a>2.5 条件随机场的矩阵形式</h2><p>​        条件随机场还可以用矩阵来表示，假设$P_w(\boldsymbol{y}|\boldsymbol{x})$是由<br>$$<br>\begin{aligned}P(y|x)&amp;=\frac{1}{Z(x)}\exp{\sum\limits_{k=1}^Kw_kf_k(y,x)}\\Z(x)&amp;=\sum\limits_y\exp{\sum\limits_{k=1}^Kw_kf_k(y,x)}\end{aligned}<br>$$<br>给出的线性链条件随机场，表示对给定观测序列$\boldsymbol{x}$，相应的标记序列$\boldsymbol{y}$的条件概率。引进特殊的起点和终点状态标记$y_0=start,y_{n+1}=stop$，这时$P_w(\boldsymbol{y}|\boldsymbol{x})$可以通过矩阵形式表示。</p>
+<p>​        对观测序列$\boldsymbol{x}$的每一个位置$i=1,2,…,n+1$，定义一个$m$阶矩阵（$m$是标记$\boldsymbol{y}$的取值的个数）：</p>
+<p>$$<br>\begin{aligned}<br>M_i(x)&amp;=[M_i(y_{i-1},y_i|x)]\<br>M_i(y_{i-1},y_i|x)&amp;=\exp(W_i((y_{i-1},y_i|x))\<br>W_i((y_{i-1},y_i|x)&amp;=\sum\limits_{i=1}^Kw_kf_k(y_{i-1},y_i|x)<br>\end{aligned}<br>$$<br>​        这样，给定观测序列$\boldsymbol{x}$，标记序列$\boldsymbol{y}$的非规范化概率可以通过$n+1$个矩阵的乘积$\prod\limits_{i=1}^{n+1}M_i(y_{i-1},y_i|x)$表示，每一次乘就代表了一次状态转移，于是，条件概率$P_w(\boldsymbol{y}|\boldsymbol{x})$是：<br>$$<br>P_w(\boldsymbol{y}|\boldsymbol{x})=\frac{1}{Z_w(x)}\prod\limits_{i=1}^{n+1}M_i(y_{i-1},y_i|x)<br>$$<br>其中，$Z_w(x)$是规范化因子，是$n+1$个矩阵的乘积的(start,stop)元素：<br>$$<br>Z_w(x)=(M_1(x)M_2(x)…M_{n+1}(x))_{start,atop}<br>$$<br>注意，$y_0=start$与$y_{n+1}=stop$表示开始状态与终止状态，规范化因子$Z_w(x)$是以start为起点stop为终点通过状态的所有路径$y_1y_2…y_n$的非规范化概率$\prod\limits_{i=1}^{n+1}M_i(y_{i-1},y_i|x)$之和。下面举个例子来说明。</p>
+<p>例：给定一个由下图所示的线性链条件随机场，观测序列$\boldsymbol{x}$，标记序列$\boldsymbol{y}$，$i=1,2,3,n=3$，标记$y_i\in\{1,2\}$，假设$y_0=start=1,y_4=stop=1$，各个位置的随机矩阵为$M_1(x),M_2(x),M_3(x),M_4(x)$分别是：<br>$$<br>M_1(x)=\begin{bmatrix}<br>a_{01} &amp; a_{02}\<br>0 &amp; 0<br>\end{bmatrix},<br>M_2(x)=\begin{bmatrix}<br>b_{11} &amp; b_{12}\<br>b_{21} &amp; b_{22}<br>\end{bmatrix},<br>M_3(x)=\begin{bmatrix}<br>c_{11} &amp; c_{12}\<br>c_{21} &amp; c_{22}<br>\end{bmatrix},<br>M_4(x)=\begin{bmatrix}<br>1 &amp; 0\<br>1 &amp; 0<br>\end{bmatrix}<br>$$<br>试求状态序列$\boldsymbol{y}$以start为起点stop为终点所有路径的非规范化概率及规范化因子。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200323165759107.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+<p>解：</p>
+<p>从start到stop一共有8条路径：<br>$$<br>(1,1,1),(1,1,2),(1,2,1),(1,2,2),(2,1,1),(2,1,2)(2,2,1),(2,2,2)<br>$$<br>分别对应的非规范化概率为：<br>$$<br>a_{01}b_{11}c_{11},a_{01}b_{11}c_{12},a_{01}b_{12}c_{21},a_{01}b_{12}c_{22}\<br>a_{02}b_{21}c_{11},a_{02}b_{21}c_{12},a_{02}b_{22}c_{21},a_{02}b_{22}c_{12}<br>$$<br>根据规范化因子公式求解：<br>$$<br>\begin{aligned}Z_w(x)&amp;=(M_1(x)M_2(x)…M_{n+1}(x))_{start,atop}\<br>&amp;=M_1(x)M_2(x)M_3(x)M_4(x)\<br>&amp;=\begin{bmatrix}a_{01}b_{11}+a_{02}b_{21} &amp; a_{01}b_{12}+a_{02}b_{22}\<br>0&amp;0\end{bmatrix}M_3(x)M_4(x)\<br>&amp;=\begin{bmatrix}a_{01}b_{11}c_{11}+a_{02}b_{21}c_{11}+a_{01}b_{12}c_{21}+a_{02}b_{22}c_{21}&amp;a_{01}b_{11}c_{12}+a_{02}b_{21}c_{12}+a_{01}b_{12}c_{22}+a_{02}b_{22}c_{22}\<br>0&amp;0\end{bmatrix}\begin{bmatrix}1&amp;0\\1&amp;0\end{bmatrix}\<br>&amp;=\begin{bmatrix}a_{01}b_{11}c_{11}+a_{02}b_{21}c_{11}+a_{01}b_{12}c_{21}+a_{02}b_{22}c_{21}+a_{01}b_{11}c_{12}+a_{02}b_{21}c_{12}+a_{01}b_{12}c_{22}+a_{02}b_{22}c_{22}&amp;0\<br>0&amp;0\end{bmatrix}<br>\end{aligned}<br>$$<br>其第一行第一列的元素为<br>$$<br>a_{01}b_{11}c_{11}+a_{02}b_{21}c_{11}+a_{01}b_{12}c_{21}+a_{02}b_{22}c_{21}+a_{01}b_{11}c_{12}+a_{02}b_{21}c_{12}+a_{01}b_{12}c_{22}+a_{02}b_{22}c_{22}<br>$$<br>恰好是从start到stop的所有路径的非规范概率之和，即$Z(x)$。从这个例子可以看出，要计算$Z(x)$需要考虑到所有可能的路径，当序列长度增加，状态数量增加，计算很困难。</p>
+<h2 id="2-5-条件随机场的三个问题"><a href="#2-5-条件随机场的三个问题" class="headerlink" title="2.5 条件随机场的三个问题"></a>2.5 条件随机场的三个问题</h2><p>类似HMM模型，条件随机场也有三个问题</p>
+<ul>
+<li>概率计算问题</li>
+<li>学习问题</li>
+<li>预测问题</li>
+</ul>
+<h1 id="3-条件随机场的概率计算问题"><a href="#3-条件随机场的概率计算问题" class="headerlink" title="3 条件随机场的概率计算问题"></a>3 条件随机场的概率计算问题</h1><p>​        <strong>条件随机场的概率计算问题是给定条件随机场$P(Y|X)$，输入序列$\boldsymbol{x}$和输出序列$\boldsymbol{y}$，计算条件概率$P(Y_i=y_i|x),P(Y_{i-1}=y_{i-1},Y_i=y_i|x)$以及相应的数学期望的问题</strong>。为了方便起见，像HMM模型那样，引进前向-后向向量，递归的计算以上概率及期望值，这个算法被称作前向-后向算法。这里的前向-后向算法和HMM模型很像，具体参考<a href="https://blog.csdn.net/Elenstone/article/details/104902120" target="_blank" rel="noopener">一文读懂NLP之隐马尔科夫模型</a>。</p>
+<h2 id="3-1-前向-后向算法"><a href="#3-1-前向-后向算法" class="headerlink" title="3.1 前向-后向算法"></a>3.1 前向-后向算法</h2><p>​        对每个指标$i=0,1,2,…,n+1$，定义前向向量$\alpha_i(x)$:<br>$$<br>\alpha_0(y|x)=\begin{cases}1,&amp;y=start\<br>0,&amp;否则<br>\end{cases}<br>$$<br>​        递推公式：<br>$$<br>\alpha_i^T(y_i|x)=\alpha_{i-1}^T(y_{i-1}|x)M_i(y_{i-1},y_i|x),\quad i=1,2,3,…,n+1<br>$$<br>​        也可以表示为：<br>$$<br>\alpha_i^T(x)=\alpha_{i-1}^T(x)M_i(x)<br>$$<br>$\alpha_i(y_i|x)$表示在位置$i$的标记是$y_i$并且到位置$i$的<strong>前部分标记序列的非规范化概率</strong>（只是一个有概率意义的数值，不是真正意义的概率），$y_i$可取的值有$m$个，所以$\alpha_i(y_i|x)$是m维列向量。</p>
+<p>​        同样，对每个指标$i=0,1,2,…,n+1$，定义后向向量$\beta_i(x)$:<br>$$<br>\beta_{n+1}(y_{n+1}|x)=\begin{cases}1,&amp;y_{n+1}=stop\<br>0,&amp;否则\end{cases}\<br>\beta_i(y_i|x)=M_i(y_i,y_{i+1}|x)\beta_{i-1}(y_{i+1}|x)<br>$$<br>​        又可以表示为：<br>$$<br>\beta_i(x)=M_{i+1}(x)\beta_{i+1}(x)<br>$$<br>$\beta_i(y_i|x)$表示在位置$i$的标记为$y_i$并且从$i+1$到$n$的后部分标记序列的非规范化概率。</p>
+<p>​        由前向-后向向量定义可以得到：<br>$$<br>Z(x)=\alpha_n^T(x)\cdot \boldsymbol{1}=\boldsymbol{1}^T\cdot \beta_1(x)<br>$$<br>​        这里，$\boldsymbol{1}$是元素均为1的m维列向量。</p>
+<h2 id="3-2-概率计算"><a href="#3-2-概率计算" class="headerlink" title="3.2 概率计算"></a>3.2 概率计算</h2><p>​            按照前向-后向向量的定义，很容易计算标记序列在位置$i$是标记$y_i$的条件概率和在位置$i-1$与$i$是标记$y_{i-1}$和$y_i$的条件概率:<br>$$<br>\begin{aligned}<br>P(Y_i=y_i|x)&amp;=\frac{\alpha_i^T(y_i|x)\beta_i(y_i|x)}{Z(x)}\<br>P(Y_{i-1}=y_{i-1},Y_i=y_i|x)&amp;=\frac{\alpha_{i-1}^T(y_{i-1}|x)M_i(y_{i-1},y_i|x)\beta_i(y_i|x)}{Z(x)}<br>\end{aligned}<br>$$<br>其中，$Z(x)=\alpha_n^T(x)\cdot \boldsymbol{1}$</p>
+<h2 id="3-3-期望值的计算"><a href="#3-3-期望值的计算" class="headerlink" title="3.3 期望值的计算"></a>3.3 期望值的计算</h2><p>​        利用前向-后向向量，可以计算特征函数关于联合分布$P(X,Y)$和条件分布$P(Y|X)$的数学期望。</p>
+<p>​        特征函数$f_k$关于条件分布$P(Y|X)$的数学期望是：<br>$$<br>\begin{aligned}<br>E_{P(Y|X)}[f_k]&amp;=\sum\limits_yP(y|x)f_k(y,x)\<br>&amp;=\sum\limits_{i=1}^{n+1}\sum\limits_{y_{i-1}y_i}f_k(y_{i-1},y_i,x,i)\frac{\alpha_{i-1}^T(y_{i-1}|x)M_i(y_{i-1},y_i|x)\beta_i(y_i|x)}{Z(x)},\quad k=1,2,…,K<br>\end{aligned}<br>$$<br>其中，$Z(x)=\alpha_n^T(x)\cdot \boldsymbol{1}$，从公式来理解，对特征函数求期望，就是对图中的每条边求期望，而一条边的出现跟这条边上的两个节点有关，对应特征$f_k(y_{i-1},y_i,x,i)$第$i$时刻的某条边，出现这条边的概率为$P(y_{i-1},y_1|x)$。</p>
+<p>​        假设经验分布为$\tilde P(X)$，特征函数$f_k$关于联合分布$P(X,Y)$的数学期望是：<br>$$<br>\begin{aligned}<br>E_{P(X,Y)}[f_k]&amp;=\sum\limits_{x,y}P(x,y)\sum\limits_{i=1}^{n+1}f_k(y_{i-1},y_i,x,i)\<br>&amp;=\sum\limits_x\tilde P(x)\sum\limits_yP(y|x)\sum\limits_{i=1}^{n+1}f_k(y_{i-1},y_i,x,i)\<br>&amp;=\sum\limits_x\tilde P(x)\sum\limits_{i=1}^{n+1}\sum\limits_{y_{i-1}y_i}f_k(y_{i-1},y_i,x,i)\frac{\alpha_{i-1}^T(y_{i-1}|x)M_i(y_{i-1},y_i|x)\beta_i(y_i|x)}{Z(x)},\quad k=1,2,…,K<br>\end{aligned}<br>$$<br>其中，$Z(x)=\alpha_n^T(x)\cdot \boldsymbol{1}$。</p>
+<p>​        上两个式子是特征函数数学期望的一般计算公式。对于转移特征$t_k$和状态特征$s_l$，可以将$f_k$换成$t_k,s_l$求相应的特征函数期望。</p>
+<h1 id="4-条件随机场的学习算法"><a href="#4-条件随机场的学习算法" class="headerlink" title="4. 条件随机场的学习算法"></a>4. 条件随机场的学习算法</h1><p>​        条件随机场的学习算法：给定训练数据集，估计条件随机场模型参数的问题，即条件随机场的学习问题。条件随机场模型实际上是定义在时序数据上的对数线性模型，其学习方法包括极大似然估计和正则化的极大似然估计。具体的优化实现算法有改进的迭代尺度法IIS、梯度下降法以及拟牛顿法。</p>
+<h2 id="4-1-改进的迭代尺度法"><a href="#4-1-改进的迭代尺度法" class="headerlink" title="4.1 改进的迭代尺度法"></a>4.1 改进的迭代尺度法</h2><p>​        已知训练数据集，由此可知经验概率分布$\tilde P(X,Y)$，可以通过极大化训练数据的对数似然函数来求模型参数。</p>
+<p>​        训练数据的对数似然函数为：<br>$$<br>L(w)=L_{\tilde P}(P_w)=\log{\prod \limits_{x,y}P_w(y|x)^{\tilde P(x,y)}}=\sum\limits_{x,y}\tilde P(x,y)\log{P_w(y|x)}<br>$$<br>当$P_w$是下列式子：<br>$$<br>\begin{aligned}<br>P(y|x)&amp;=\frac{1}{Z(x)}\exp{\sum\limits_{k=1}^Kw_kf_k(y,x)}\<br>Z(x)&amp;=\sum\limits_y\exp{\sum\limits_{k=1}^Kw_kf_k(y,x)}<br>\end{aligned}<br>$$<br>给出的条件随机场模型时，对数似然函数为：<br>$$<br>\begin{aligned}<br>L(w)&amp;=\sum\limits_{x,y}\tilde P(x,y)\log{P_w(y|x)}\<br>&amp;=\sum\limits_{x,y}[\tilde P(x,y)\sum\limits_{k=1}^Kw_kf_k(y,x)-\tilde P(x,y)\log{Z_w(x)}]\<br>&amp;=\sum\limits_{j=1}^N\sum\limits_{k=1}^Kw_kf_k(y_j,x_j)-\sum\limits_{j=1}^NZ_w(x_j)<br>\end{aligned}<br>$$<br>​        改进的迭代尺度法通过迭代的方法不断优化对数似然函数改变量的下界，达到极大化对数似然函数的目的。假设模型的当前参数向量为$\boldsymbol{w}＝(w_1,w_2,…,w_K)^T$，向量的增量为$\boldsymbol{\delta}＝(\delta)_1,\delta_2,…,\delta_K)^T$，更新参数向量$\boldsymbol{w}＋\boldsymbol{\delta}＝(w_1+\delta_1,w_2+\delta_2,..,w_K+\delta_K)$。在每步迭代过程中，改进的代尺度法通过依次求解下列式子$E_{\tilde P}[t_k]$和$E_{\tilde P}[s_l]$得到$\boldsymbol{\delta}=(\delta_1,\delta_2,…,\delta_K)^T$。</p>
+<p>​        关于转移特征t的更新方程为：<br>$$<br>\begin{aligned}<br>E_{\tilde P}[t_k]&amp;=\sum\limits_{x,y}\tilde P(x,y)\sum\limits_{i=1}^{n+1}t_k(y_{i-1},y_i,x,i)\<br>&amp;=\sum\limits_{x,y}\tilde P(x)P(y|x)\sum\limits_{i=1}^{n+1}t_k(y_{i-1},y_i,x,i)\exp{(\delta_kT(x,y))},\quad k=1,2,…,K_1<br>\end{aligned}<br>$$<br>​        关于状态特征s的更新方程为:<br>$$<br>\begin{aligned}<br>E_{\tilde P}[s_l]&amp;=\sum\limits_{x,y}\tilde P(x,y)\sum\limits_{i=1}^{n+1}s_l(y_i,x,i)\<br>&amp;=\sum\limits_{x,y}\tilde P(x)P(y|x)\sum\limits_{i=1}^{n+1}s_l(y_i,x,i)\exp{(\delta_{K_1+l}T(x,y))},\quad k=1,2,…,K_2<br>\end{aligned}<br>$$<br>这里，$T(x,y)$是在数据$(x,y)$中出现的所有特征数的总和：<br>$$<br>T(x,y)=\sum\limits_kf_k(y,x)=\sum\limits_{k=1}^K\sum\limits_{i=1}^{n+1}f_k(y_{i-1},y_i,x,i)<br>$$<br>算法过程：</p>
+<ul>
+<li>输入：特征函数$t_1,t_2,…,t_{K_1},s_1,s_2,…,s_{K_2}$；经验分布$\tilde P(x,y)$;</li>
+<li>输出：餐数据及值$\hat{w}$；模型$P_{\hat{w}}$。</li>
+</ul>
+<ol>
+<li><p>对所有$k\in{1,2,…,K}$，取初值$w_k=0$</p>
+</li>
+<li><p>对每一$k\in{1,2,…,K}$：</p>
+<p>(a). 当$k=1,2,…,K_{1}$时，令$\delta_k$是方程<br>$$<br>\sum\limits_{x,y}\tilde P(x)P(y|x)\sum\limits_{i=1}^{n+1}t_k(y_{i-1},y_i,x,i)\exp{(\delta_kT(x,y))}=E_{\tilde P}[t_k]<br>$$<br>的解</p>
+<p>​        当$k=K_1+l,l=1,2,…,K_2$时，令$\delta_{k+l}$是方程<br>$$<br>\sum\limits_{x,y}\tilde P(x)P(y|x)\sum\limits_{i=1}^{n+1}s_l(y_i,x,i)\exp{(\delta_{K_1+l}T(x,y))}=E_{\tilde P}[s_l]<br>$$<br>(b). 更新$w_k$值：$w_k\leftarrow w_k+\delta_k$</p>
+</li>
+<li><p>如果不是所有$w_k$都收敛，重复步骤2.</p>
+<p>上式中，$T(x,y)$表示数据$(x,y)$中的特征总数，对不同的数据$(x,y)$取值可能不同，为了处理这个问题，定义松弛特征$s(x,y)=S-\sum\limits_{i=1}^{n+1}\sum\limits_{k=1}^Kf_k(y_{i-1},y_i,x,i)$，其中S是一个常数，选择足够大的常数S使得对训练数据集的所有数据$(x,y)$，$s(x,y)\geq 0$成立，这是特征总数可取S。</p>
+<p>因此，对于转移特征$t_k,\delta_k$的更新方程是：<br>$$<br>\sum\limits_{x,y}\tilde P(x)P(y|x)\sum\limits_{i=1}^{n+1}t_k(y_{i-1},y_i,x,i)\exp{(\delta_{K}S)}=E_{\tilde P}[t_k]\<br>\delta_k=\frac{1}{S}\log\frac{E_{\tilde P}[t_k]}{E_P[t_k]}<br>$$<br>其中，<br>$$<br>E_P(t_k)=\sum\limits_x\tilde P(x)\sum\limits_{i=1}^{n+1}\sum\limits_{y_{i-1}y_i}t_k(y_{i-1},y_i,x,i)\frac{\alpha_{i-1}^T(y_{i-1}|x)M_i(y_{i-1},y_i|x)\beta_i(y_i|x)}{Z(x)}<br>$$<br>同样，对于状态特征$s_l,\delta_k$的更新方程是：</p>
+</li>
+</ol>
+<pre><code>$$
+\sum\limits_{x,y}\tilde P(x)P(y|x)\sum\limits_{i=1}^{n+1}s_l(y_{i-1},y_i,x,i)\exp{(\delta_{K+l}S)}=E_{\tilde P}[s_l]\\\delta_{k+l}=\frac{1}{S}\log\frac{E_{\tilde P}[s_l]}{E_P[s_l]}
+$$
+其中，
+$$
+E_P(s_l)=\sum\limits_x\tilde P(x)\sum\limits_{i=1}^{n}\sum\limits_{y_i}s_l(y_i,x,i)\frac{\alpha_{i}^T(y_{i}|x)\beta_i(y_i|x)}{Z(x)}
+$$
+以上算法称为算法S，在算法S中需要是常数S取足够大，这样一来，每部迭代的增量向量会变大，算法收敛会变慢。
+
+算法T视图解决这个问题，算法T对每个观测序列$x$计算其特征总数最大值$T(x)$:
+$$
+T(x)=\max\limits_yT(x,y)
+$$
+利用前向-后向递推公式，可以很容易地计算$T(x)=t$
+
+这时关于转移特征参数的更新方程可以写成:
+$$
+\begin{aligned}E_{\tilde P}[t_k]&amp;=\sum\limits_{x,y}\tilde P(x)P(y|x)\sum\limits_{i=1}^{n+1}t_k(y_{i-1},y_i,x,i)\exp{(\delta_{K}T(x))}\\
+&amp;=\sum\limits_{x}\tilde P(x)\sum\limits_{y}P(y|x)\sum\limits_{i=1}^{n+1}t_k(y_{i-1},y_i,x,i)\exp{(\delta_{K}T(x))}\\
+&amp;=\sum\limits_{x}\tilde P(x)a_{k,t}\exp(\delta_k\cdot t)\\
+&amp;=\sum\limits_{t=0}^{\max}a_{k,t}\beta_k^t
+\end{aligned}
+$$
+这里，$a_{k,t}$是特征$t_k$的期待值，$\delta_k=\log{\beta_k},\beta_k$是上述多项式方程唯一的实根，可以用牛顿法求得，从而得到相关的$\delta_k$。
+
+同样，可以用于关于状态特征的参数更新。</code></pre><h2 id="4-2-拟牛顿法"><a href="#4-2-拟牛顿法" class="headerlink" title="4.2 拟牛顿法"></a>4.2 拟牛顿法</h2><p>​        条件随机场模型学习还可以应用牛顿法或拟牛顿法。对于条件随机场模型<br>$$<br>P_w(y|x)=\frac{\exp{(\sum\limits_{i=1}^nw_if_i(x,y))}}{\sum\limits_y\exp{(\sum\limits_{i=1}^nw_if_i(x,y))}}<br>$$<br>学习的优化目标函数是：<br>$$<br>\min\limits_{w\in R^n}f(w)=\sum\limits_x\tilde P(x)\log \sum\limits_yexp(\sum\limits_{i=1}^nw_if_i(x,y))<br>$$<br>其梯度函数是：<br>$$<br>g(w)=\sum\limits_{x,y}\tilde P(x)P_w(y|x)f(x,y)-E_{\tilde P}(f)<br>$$<br>拟牛顿法的BFGS算法如下：</p>
+<p>[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-cNyvgEa2-1584953186799)(F:\Markdown\image\image-20200323164004538.png)]</p>
+<p>​        条件随机场的预测问题是给定条件随机场$P(Y|X)$和输入序列（观测序列）$x$，求条件概率最大的输出序列（标记序列）$y^<em>$，即对观测序列进行标注。条件随机场的预测算法是注明的维特比算法，参考<a href="https://blog.csdn.net/Elenstone/article/details/104902120" target="_blank" rel="noopener">一文读懂NLP之隐马尔科夫模型</a>。<br>$$<br>\begin{aligned}<br>y^</em>&amp;=\arg\max_yP(y|x)\<br>&amp;=\arg\max_y\frac{\exp(w\cdot F(y,x))}{Z_w(x)}\<br>&amp;=\arg\max_y\exp(w\cdot F(y,x))\<br>&amp;=\arg\max_y(w\cdot F(y,x))<br>\end{aligned}<br>$$<br>​        于是，条件随机场的预测问题称为求非规范化概率最大的最优路径问题：$\max\limits_y(w\cdot F(y,x))$，这里，路径表示标记序列。其中，<br>$$<br>\begin{aligned}<br>\boldsymbol{w}&amp;=(w_1,w_2,…,w_K)^T\<br>F(y,x)&amp;=(f_1(y,x),f_2(y,x),…,f_K(y,x))^T\<br>f_k(y,x)&amp;=\sum\limits_{i=1}^nf_k(y_{i-1},y_i,x,i),\quad k=1,2,…,K<br>\end{aligned}<br>$$<br>注意，这时只需计算飞归发话概率，而不必计算概率，可以大大提高效率。为了求解最优路径，可以将$\max\limits_y(w\cdot F(y,x))$写成以下形式：<br>$$<br>\max\limits_y(w\cdot F_i(y_{i-1},y_i,x))<br>$$<br>其中，$F_i(y_{i-1},y_i,x)=(f_1(y_{i-1},y_i,x,i),f_2(y_{i-1},y_i,x,i),…,f_K(y_{i-1},y_i,x,i))^T$是局部特征向量。</p>
+<h2 id="5-1-维特比算法"><a href="#5-1-维特比算法" class="headerlink" title="5.1 维特比算法"></a>5.1 维特比算法</h2><p>首先求出位置1的各个标记$j=1,2,…,m$的非规范化概率：<br>$$<br>\delta_1(j)=w\cdot F_1(y_0=start,y_1=j,x),\quad j=1,2,…m<br>$$<br>一般的，由递推公式，求出到位置$i$的各个标记$l=1,2,…,m$的非规范化概率的最大值，同时记录非规范化概率最大值的路径<br>$$<br>\delta_i(l)=\max\limits_{1\leq j\leq m}\{\delta_{i-1}(j)+w\cdot F_i(y_{i-1}=j,y_i=l,x)\},\quad l=1,2,…,m\<br>\Psi_i(l)=\arg\max\limits_{1\leq j\leq m}\{\delta_{i-1}(j)+w\cdot F_i(y_{i_1}=j,y_i=l,x)\},\quad l=1,2,…,m<br>$$<br>知道$i=n$时终止，这时求得非规范化概率的最大值为$\max\limits_y(w\cdot F(y,x))=\max\limits_{1\leq j\leq m}\delta_n(j)$及最优路径的终点$y^<em>=\arg\max\limits_{1\leq j\leq m}\delta_n(j)$，再由此最优路径终点依次往前回溯$y_i^</em>=\Psi_{i+1}(y_{i+1}^<em>),i=n-1,n-2,…,1$求得最优路径$y^</em>=(y_1^<em>,y_2^</em>,…,y_n^*)^T$。以上就是维特比算法的思路流程。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200323165909892.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+<h2 id="5-2-维特比算法举例"><a href="#5-2-维特比算法举例" class="headerlink" title="5.2 维特比算法举例"></a>5.2 维特比算法举例</h2><p>​        设有一标注问题：输入观测序列为$\boldsymbol{X}=(X_1,X_2,X_3)$，输出标记序列为$\boldsymbol{Y}=(Y_1,Y_2,Y_3)$，$Y_1,Y_2,Y_3$取值空间为$\{1,2\}$。假设特征函数$t_k,s_l$和对应的权值$\lambda_k$，$\mu_l$如下：<br>$$<br>t_1=t_1(y_{i-1}=1,y_i=2,x,i),\quad i=2,3,\quad \lambda_1=1<br>$$<br>这表示当当前位置$y$取值为2，上一位置为1，则特征函数$t$取值为1，取值为0的条件省略，即：<br>$$<br>t_1(y_{i-1}=1,y_i=2,x,i)=\begin{cases}1,&amp;  y_{i-1}=1,y_i=2,x,i,(i=2,3)\<br>0,&amp; 其他\end{cases}<br>$$<br><img src="https://img-blog.csdnimg.cn/20200323165949191.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+<p>一共有5个特征函数$t$，4个特征函数$s$。</p>
+<p>用i特比算法求给定输入序列$x$对应的最有输出序列$y^<em>=(y_1^</em>,y_2^<em>,y_3^</em>)$</p>
+<p>求解最优路径，即求解$\max\sum\limits_{i=1}^3w\cdot F_i(y_{i-1},y_i,x)$</p>
+<ol>
+<li>初始化</li>
+</ol>
+<p>$$<br>\delta_1(j)=w\cdot F_1(y_0=start,y_1=j,x),\quad j=1,2<br>$$</p>
+<p>64422.png” style=”zoom:75%;” /&gt;</p>
+<h2 id="5-2-维特比算法举例-1"><a href="#5-2-维特比算法举例-1" class="headerlink" title="5.2 维特比算法举例"></a>5.2 维特比算法举例</h2><p>​        设有一标注问题：输入观测序列为$\boldsymbol{X}=(X_1,X_2,X_3)$，输出标记序列为$\boldsymbol{Y}=(Y_1,Y_2,Y_3)$，$Y_1,Y_2,Y_3$取值空间为$\{1,2\}$。假设特征函数$t_k,s_l$和对应的权值$\lambda_k$，$\mu_l$如下：<br>$$<br>t_1=t_1(y_{i-1}=1,y_i=2,x,i),\quad i=2,3,\quad \lambda_1=1<br>$$<br>这表示当当前位置$y$取值为2，上一位置为1，则特征函数$t$取值为1，取值为0的条件省略，即：<br>$$<br>t_1(y_{i-1}=1,y_i=2,x,i)=\begin{cases}1,&amp;  y_{i-1}=1,y_i=2,x,i,(i=2,3)\<br>0,&amp; 其他\end{cases}<br>$$<br><img src="https://img-blog.csdnimg.cn/20200323170047742.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+<p>一共有5个特征函数$t$，4个特征函数$s$。</p>
+<p>用i特比算法求给定输入序列$x$对应的最有输出序列$y^<em>=(y_1^</em>,y_2^<em>,y_3^</em>)$</p>
+<p>求解最优路径，即求解$\max\sum\limits_{i=1}^3w\cdot F_i(y_{i-1},y_i,x)$</p>
+<ol>
+<li>初始化</li>
+</ol>
+<p>$$<br>\delta_1(j)=w\cdot F_1(y_0=start,y_1=j,x),\quad j=1,2<br>$$</p>
+<p><img src="https://img-blog.csdnimg.cn/2020032317003261.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>代码实现见我的<a href="https://github.com/CodingMarathon/All_Algorithm/tree/master/CRF" target="_blank" rel="noopener">Github</a></p>
+
+            </div>
+            <hr />
+
+            
+            <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.88rem;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-large waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fa fa-close"></i></a>
+            <h4 class="reward-title">写作不易，客官能否打赏一杯奶茶？</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        <p class="reprint-tip">
+            <i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;
+            <span>转载规则</span>
+        </p>
+        
+            <div class="center-align">
+                <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                    <img alt=""
+                         style="border-width:0"
+                         src="https://i.creativecommons.org/l/by/4.0/88x31.png"/>
+                </a>
+            </div>
+            <br/>
+            <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
+                  property="dct:title" rel="dct:type">
+                    《crf》
+                </span> 由
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2020/03/26/crf/" property="cc:attributionName"
+               rel="cc:attributionURL">
+                CodingMarathon
+            </a> 采用
+            <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                知识共享署名 4.0 国际许可协议
+            </a>进行许可。
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+        </div>
+    </div>
+
+    
+    <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: 'af79022a0bda1da52424',
+        clientSecret: '79c4379ef65f69bbba44291b29a5a219e8518959',
+        repo: 'CodingMarathon.github.io',
+        owner: 'CodingMarathon',
+        admin: "CodingMarathon",
+        id: '2020/03/26/crf/',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+    
+
+    
+
+    
+
+    
+
+    
+    <style>
+    .valine-card {
+        margin: 1.5rem auto;
+    }
+
+    .valine-card .card-content {
+        padding: 20px 20px 5px 20px;
+    }
+
+    #vcomments input[type=text],
+    #vcomments input[type=email],
+    #vcomments input[type=url],
+    #vcomments textarea {
+        box-sizing: border-box;
+    }
+
+    #vcomments p {
+        margin: 2px 2px 10px;
+        font-size: 1.05rem;
+        line-height: 1.78rem;
+    }
+
+    #vcomments blockquote p {
+        text-indent: 0.2rem;
+    }
+
+    #vcomments a {
+        padding: 0 2px;
+        color: #42b983;
+        font-weight: 500;
+        text-decoration: underline;
+    }
+
+    #vcomments img {
+        max-width: 100%;
+        height: auto;
+        cursor: pointer;
+    }
+
+    #vcomments ol li {
+        list-style-type: decimal;
+    }
+
+    #vcomments ol,
+    ul {
+        display: block;
+        padding-left: 2em;
+        word-spacing: 0.05rem;
+    }
+
+    #vcomments ul li,
+    ol li {
+        display: list-item;
+        line-height: 1.8rem;
+        font-size: 1rem;
+    }
+
+    #vcomments ul li {
+        list-style-type: disc;
+    }
+
+    #vcomments ul ul li {
+        list-style-type: circle;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    #vcomments table, th, td {
+        border: 0;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments h1 {
+        font-size: 1.85rem;
+        font-weight: bold;
+        line-height: 2.2rem;
+    }
+
+    #vcomments h2 {
+        font-size: 1.65rem;
+        font-weight: bold;
+        line-height: 1.9rem;
+    }
+
+    #vcomments h3 {
+        font-size: 1.45rem;
+        font-weight: bold;
+        line-height: 1.7rem;
+    }
+
+    #vcomments h4 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    #vcomments h5 {
+        font-size: 1.1rem;
+        font-weight: bold;
+        line-height: 1.4rem;
+    }
+
+    #vcomments h6 {
+        font-size: 1rem;
+        line-height: 1.3rem;
+    }
+
+    #vcomments p {
+        font-size: 1rem;
+        line-height: 1.5rem;
+    }
+
+    #vcomments hr {
+        margin: 12px 0;
+        border: 0;
+        border-top: 1px solid #ccc;
+    }
+
+    #vcomments blockquote {
+        margin: 15px 0;
+        border-left: 5px solid #42b983;
+        padding: 1rem 0.8rem 0.3rem 0.8rem;
+        color: #666;
+        background-color: rgba(66, 185, 131, .1);
+    }
+
+    #vcomments pre {
+        font-family: monospace, monospace;
+        padding: 1.2em;
+        margin: .5em 0;
+        background: #272822;
+        overflow: auto;
+        border-radius: 0.3em;
+        tab-size: 4;
+    }
+
+    #vcomments code {
+        font-family: monospace, monospace;
+        padding: 1px 3px;
+        font-size: 0.92rem;
+        color: #e96900;
+        background-color: #f8f8f8;
+        border-radius: 2px;
+    }
+
+    #vcomments pre code {
+        font-family: monospace, monospace;
+        padding: 0;
+        color: #e8eaf6;
+        background-color: #272822;
+    }
+
+    #vcomments pre[class*="language-"] {
+        padding: 1.2em;
+        margin: .5em 0;
+    }
+
+    #vcomments code[class*="language-"],
+    pre[class*="language-"] {
+        color: #e8eaf6;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+
+    #vcomments b,
+    strong {
+        font-weight: bold;
+    }
+
+    #vcomments dfn {
+        font-style: italic;
+    }
+
+    #vcomments small {
+        font-size: 85%;
+    }
+
+    #vcomments cite {
+        font-style: normal;
+    }
+
+    #vcomments mark {
+        background-color: #fcf8e3;
+        padding: .2em;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+</style>
+
+<div class="card valine-card" data-aos="fade-up">
+    <div id="vcomments" class="card-content"></div>
+</div>
+
+<script src="/libs/valine/av-min.js"></script>
+<script src="/libs/valine/Valine.min.js"></script>
+<!-- <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script> -->
+
+<script>
+    new Valine({
+        el: '#vcomments',
+        appId: '',
+        appKey: '',
+        notify: 'false' === 'true',
+        verify: 'false' === 'true',
+        visitor: 'false' === 'true',
+        avatar: 'wavatar',
+        pageSize: '10',
+        lang: 'zh-cn',
+        placeholder: '如果你没有GitHub账号，还可以在这里评论啦！'
+    });
+</script>
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-dot-circle-o"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2020/03/26/crf/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="crf">
+                        
+                        <span class="card-title">crf</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            ﻿@toc
+0 前言​        条件随机场（conditional random field，CRF）是给定一组输入随机变量条件下另一组输出随机变量的条件概率分布模型，其特点是假设输出随机变量构成马尔科夫随机场。本文主要讨论它在标注问
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-03-26
+                            </span>
+                        <span class="publish-author">
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/03/26/hmm/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="hmm">
+                        
+                        <span class="card-title">hmm</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            @TOC
+1 隐马尔科夫模型本文主要介绍NLP领域中很重要的一个模型——隐马尔科夫模型（Hidden Markov Model，HMM）。希望读完本文后，大家能够清楚地理解HMM并能够应用到实际中。  
+隐马尔科夫模型是结构最简单的动态贝叶
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-03-26
+                            </span>
+                        <span class="publish-author">
+                            
+                        </span>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('120')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + '来源: CodingMarathon<br />'
+            + '作者: CodingMarathon<br />'
+            + '链接: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () { bodyElement.removeChild(newdiv); }, 200);
+    });
+</script>
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h1, h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h1, h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
+
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+<!-- 代码语言 -->
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+<!-- 代码块复制 -->
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/clipboard.min.js"></script>
+<!-- 代码块收缩 -->
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script> 
+<!-- 代码块折行 -->
+<style type="text/css">code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }</style>
+
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            &copy; 2020-2021 CodingMarathon. 版权所有
+
+            
+            &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+            <span class="white-color">19.7k</span>
+            
+
+            <br>
+            <span id="sitetime"></span>
+
+            
+            
+            <br>
+            
+            <span id="busuanzi_container_site_pv" style='display:none'>
+                <i class="fa fa-heart-o"></i>
+                本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv" style='display:none'>
+                人次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+            </span>
+            
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/CodingMarathon" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:991971906@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="https://zhihu.com/people/Elenstone" class="tooltipped" target="_blank" data-tooltip="访问我的知乎" data-position="top" data-delay="50">
+        <i class="fa fa-inverse">知</i>
+    </a>
+
+
+
+    <a href="http://wpa.qq.com/msgrd?v=3&uin=991971906&site=qq&menu=yes" class="tooltipped" target="_blank" data-tooltip="访问我的知乎" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+
+    <a href="https://weibo.com/换个名字用" class="tooltipped" target="_blank" data-tooltip="关注我的微博" data-position="top" data-delay="50">
+        <i class="fa fa-weibo"></i>
+    </a>
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+<!-- 不蒜子计数初始值纠正 -->
+<script>
+    $(document).ready(function () {
+
+        var int = setInterval(fixCount, 50);
+        var pvcountOffset = 80000;
+        var uvcountOffset = 20000;
+
+        function fixCount() {
+            if (document.getElementById("busuanzi_container_site_pv").style.display != "none") {
+                $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + pvcountOffset);
+                clearInterval(int);
+            }
+            if ($("#busuanzi_container_site_pv").css("display") != "none") {
+                $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + uvcountOffset); // 加上初始数据 
+                clearInterval(int);
+            }
+        }
+    });
+</script>
+
+<script language=javascript>
+    function siteTime() {
+        window.setTimeout("siteTime()", 1000);
+        var seconds = 1000;
+        var minutes = seconds * 60;
+        var hours = minutes * 60;
+        var days = hours * 24;
+        var years = days * 365;
+        var today = new Date();
+        var todayYear = today.getFullYear();
+        var todayMonth = today.getMonth() + 1;
+        var todayDate = today.getDate();
+        var todayHour = today.getHours();
+        var todayMinute = today.getMinutes();
+        var todaySecond = today.getSeconds();
+        /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+        year - 作为date对象的年份，为4位年份值
+        month - 0-11之间的整数，做为date对象的月份
+        day - 1-31之间的整数，做为date对象的天数
+        hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+        minutes - 0-59之间的整数，做为date对象的分钟数
+        seconds - 0-59之间的整数，做为date对象的秒数
+        microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+        var t1 = Date.UTC(2020, 03, 25, 00, 00, 00); //北京时间2020-03-25 00:00:00
+        var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+        var diff = t2 - t1;
+        var diffYears = Math.floor(diff / years);
+        var diffDays = Math.floor((diff / days) - diffYears * 365);
+        var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+        var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) / minutes);
+        var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours - diffMinutes * minutes) / seconds);
+        document.getElementById("sitetime").innerHTML = "本站已运行 " + diffYears + " 年 " + diffDays + " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+</script>
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <script type="text/javascript"> var OriginTitile = document.title, st; document.addEventListener("visibilitychange", function () { document.hidden ? (document.title = "FoolNLP叫你快回来！", clearTimeout(st)) : (document.title = "FoolNLP欢迎你！", st = setTimeout(function () { document.title = OriginTitile }, 3e3)) })
+    </script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', '');
+</script>
+
+
+
+    
+    <script src="/libs/others/clicklove.js"></script>
+    
+
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    <!-- 雪花特效 -->
+    
+
+</body>
+
+</html>

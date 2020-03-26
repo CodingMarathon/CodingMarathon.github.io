@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://CodingMarathon.github.io/2020/03/26/crf/</loc>
+    
+    <lastmod>2020-03-26T10:25:18.024Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://CodingMarathon.github.io/2020/03/26/hmm/</loc>
+    
+    <lastmod>2020-03-26T10:21:53.052Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://CodingMarathon.github.io/contact/index.html</loc>
     
     <lastmod>2020-03-25T08:46:34.261Z</lastmod>
@@ -33,13 +47,6 @@
     <loc>https://CodingMarathon.github.io/404.html</loc>
     
     <lastmod>2020-03-25T02:42:53.338Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://CodingMarathon.github.io/2020/03/25/myfirst-article/</loc>
-    
-    <lastmod>2020-03-25T02:01:14.246Z</lastmod>
     
   </url>
   
