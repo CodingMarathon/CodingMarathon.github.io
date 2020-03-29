@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://CodingMarathon.github.io/2020/03/29/word2vec-xiang-jie/</loc>
+    
+    <lastmod>2020-03-29T08:54:02.503Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://CodingMarathon.github.io/2020/03/29/1/</loc>
+    
+    <lastmod>2020-03-29T08:51:27.136Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://CodingMarathon.github.io/2020/03/26/crf/</loc>
     
     <lastmod>2020-03-26T10:25:18.024Z</lastmod>
@@ -47,13 +61,6 @@
     <loc>https://CodingMarathon.github.io/404.html</loc>
     
     <lastmod>2020-03-25T02:42:53.338Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://CodingMarathon.github.io/2020/03/25/hello-world/</loc>
-    
-    <lastmod>2020-03-25T00:33:13.783Z</lastmod>
     
   </url>
   
