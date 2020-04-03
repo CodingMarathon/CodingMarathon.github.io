@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://CodingMarathon.github.io/"/>
-  <updated>2020-03-29T08:54:02.503Z</updated>
+  <updated>2020-04-03T11:52:17.538Z</updated>
   <id>https://CodingMarathon.github.io/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>gensim训练word2vec词向量</title>
+    <link href="https://CodingMarathon.github.io/2020/04/03/gensim-xun-lian-word2vec-ci-xiang-liang/"/>
+    <id>https://CodingMarathon.github.io/2020/04/03/gensim-xun-lian-word2vec-ci-xiang-liang/</id>
+    <published>2020-04-03T11:51:08.000Z</published>
+    <updated>2020-04-03T11:52:17.538Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;﻿@&lt;a href=&quot;目录&quot;&gt;TOC&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&quot;0-前言&quot;&gt;&lt;a href=&quot;#0-前言&quot; class=&quot;headerlink&quot; title=&quot;0 前言&quot;&gt;&lt;/a&gt;0 前言&lt;/h1&gt;&lt;p&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title>Word2Vec详解</title>
@@ -32,20 +55,6 @@
           &lt;p&gt;﻿本文主要转自&lt;a href=&quot;https://blog.csdn.net/itplus/article/details/37969519&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;word2vec
         
       
-    
-    </summary>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>1</title>
-    <link href="https://CodingMarathon.github.io/2020/03/29/1/"/>
-    <id>https://CodingMarathon.github.io/2020/03/29/1/</id>
-    <published>2020-03-29T08:51:26.000Z</published>
-    <updated>2020-03-29T08:51:27.136Z</updated>
-    
-    <summary type="html">
     
     </summary>
     

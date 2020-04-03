@@ -4,10 +4,10 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="Word2Vec详解, BUAA NLP DeepLearning Knowledge Graph">
+    <meta name="keywords" content="gensim训练word2vec词向量, BUAA NLP DeepLearning Knowledge Graph">
     <meta name="baidu-site-verification" content="YBVxcnPira">
-    <meta name="description" content="﻿本文主要转自word2vec 中的数学原理详解（一）目录和前言，原文讲的十分透彻但是是分开的，所以将它合并在一起，记录在自己的专栏里，防止忘记。
-">
+    <meta name="description" content="﻿@TOC
+0 前言《词向量之Word2Vec数学原理以及源代码详解》很好的讲解了Word2Vec的原理以及一些源码的解读，Word2Vec的词向量有两种方式实现，一种是谷歌大佬们自己写的word2vec，还有一个是gensim库，由于大多">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -15,7 +15,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Word2Vec详解 | CodingMarathon</title>
+    <title>gensim训练word2vec词向量 | CodingMarathon</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -328,13 +328,13 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/13.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        Word2Vec详解
+                        gensim训练word2vec词向量
                     </div>
                 </div>
             </div>
@@ -456,7 +456,7 @@
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-03-29
+                    2020-04-03
                 </div>
 
                 <div class="post-author info-break-policy">
@@ -470,14 +470,14 @@
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    57
+                    2.1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    7 分
                 </div>
                 
                 
@@ -493,7 +493,80 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>﻿本文主要转自<a href="https://blog.csdn.net/itplus/article/details/37969519" target="_blank" rel="noopener">word2vec 中的数学原理详解（一）目录和前言</a>，原文讲的十分透彻但是是分开的，所以将它合并在一起，记录在自己的专栏里，防止忘记。<br><img src="https://img-blog.csdnimg.cn/20200329160551487.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/2020032916061275.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329160651619.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/2020032916070765.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329160721869.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/2020032916073880.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329160752449.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329160803667.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329160818107.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329160858512.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329160910158.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329160922970.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329160933282.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329160945841.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329160957816.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161008327.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161018612.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161031754.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161044304.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/2020032916105775.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161107588.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161118933.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161129956.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161141716.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161152682.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161238998.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161252728.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161306384.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161316534.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161328812.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161338498.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161349310.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161400810.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161412983.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161423118.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161434643.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161445284.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161457388.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161512147.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161523562.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161534737.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161544249.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161600234.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161622676.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161635434.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161645265.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+                <p>﻿@<a href="目录">TOC</a></p>
+<h1 id="0-前言"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言</h1><p><a href="https://blog.csdn.net/Elenstone/article/details/105180518" target="_blank" rel="noopener">《词向量之Word2Vec数学原理以及源代码详解》</a>很好的讲解了Word2Vec的原理以及一些源码的解读，Word2Vec的词向量有两种方式实现，一种是谷歌大佬们自己写的word2vec，还有一个是gensim库，由于大多数人使用的是python，所以使用gensim库的人很多。本文会详细介绍gensim里的word2vec模型，gensim包含的其他模型不介绍。</p>
+<h1 id="1-gensim库"><a href="#1-gensim库" class="headerlink" title="1 gensim库"></a>1 gensim库</h1><p>  Gensim（<a href="http://pypi.python.org/pypi/gensim）是一款开源的第三方Python工具包，用于从原始的非结构化的文本中，无监督地学习到文本隐层的主题向量表达。" target="_blank" rel="noopener">http://pypi.python.org/pypi/gensim）是一款开源的第三方Python工具包，用于从原始的非结构化的文本中，无监督地学习到文本隐层的主题向量表达。</a> 主要用于主题建模和文档相似性处理，它支持包括TF-IDF，LSA，LDA，和word2vec在内的多种主题模型算法。Gensim在诸如获取单词的词向量等任务中非常有用。</p>
+<h2 id="1-1-gensim-models-word2vec-API概述"><a href="#1-1-gensim-models-word2vec-API概述" class="headerlink" title="1.1 gensim.models.word2vec API概述"></a>1.1 gensim.models.word2vec API概述</h2><p>首先使用<code>pip install gensim</code>安装gensim库。<br>然后倒入word2vec模块<code>from gensim.models.word2vec</code>。==注意这里倒入的是小写的word2vec这个<code>.py</code>文件，其中大写的Word2Vec模型实现在这个文件中，使用模型时需要使用语句<code>word2vec.Word2Vec()</code>来创建模型。==</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Word2Vec</span><span class="token punctuation">(</span>utils<span class="token punctuation">.</span>SaveLoad<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>
+            self<span class="token punctuation">,</span> sentences<span class="token operator">=</span>None<span class="token punctuation">,</span> size<span class="token operator">=</span><span class="token number">100</span><span class="token punctuation">,</span> alpha<span class="token operator">=</span><span class="token number">0.025</span><span class="token punctuation">,</span> window<span class="token operator">=</span><span class="token number">5</span><span class="token punctuation">,</span> min_count<span class="token operator">=</span><span class="token number">5</span><span class="token punctuation">,</span>
+            max_vocab_size<span class="token operator">=</span>None<span class="token punctuation">,</span> sample<span class="token operator">=</span><span class="token number">1e</span><span class="token operator">-</span><span class="token number">3</span><span class="token punctuation">,</span> seed<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">,</span> workers<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">,</span> min_alpha<span class="token operator">=</span><span class="token number">0.0001</span><span class="token punctuation">,</span>
+            sg<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">,</span> hs<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">,</span> negative<span class="token operator">=</span><span class="token number">5</span><span class="token punctuation">,</span> cbow_mean<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">,</span> hashfxn<span class="token operator">=</span>hash<span class="token punctuation">,</span> iter<span class="token operator">=</span><span class="token number">5</span><span class="token punctuation">,</span> null_word<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">,</span>
+            trim_rule<span class="token operator">=</span>None<span class="token punctuation">,</span> sorted_vocab<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">,</span> batch_words<span class="token operator">=</span>MAX_WORDS_IN_BATCH<span class="token punctuation">)</span><span class="token punctuation">:</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li><strong>sentences</strong>：可以是一个list，对于大语料集，建议使用LneSentence以及PathLineSentence来构建。创建模型的时候如果没有这个参数，会传入一个None对象，在后续训练时可以再传入训练的语料。</li>
+<li><strong>size</strong>：是指词向量的维度，默认为100。这个维度的取值一般与我们的语料的大小相关，如果是不大的语料，比如小于100M的文本语料，则使用默认值一般就可以了。如果是超大的语料，建议增大维度。大的size需要更多的训练数据,但是效果会更好. 推荐值为100到300。</li>
+<li><strong>window</strong>：窗口大小，即词向量上下文最大距离，即包含中心词的前window个单词和后window个单词，<strong>注意在word2vec中是在[1,windows]之间随机取值，并不是固定的window个</strong>。window越大，则和某一词较远的词也会产生上下文关系。默认值为5。在实际使用中，可以根据实际的需求来动态调整这个window的大小。如果是小语料则这个值可以设的更小。对于一般的语料这个值推荐在[5,10]之间。个人理解应该是某一个中心词可能与前后多个词相关，也有的词在一句话中可能只与少量词相关（如短文本可能只与其紧邻词相关）。</li>
+<li><strong>min_count</strong>: 需要计算词向量的最小词频。这个值可以去掉一些很生僻的低频词，默认是5。如果是小语料，可以调低这个值。可以对字典做截断， 词频少于min_count次数的单词会被丢弃掉。</li>
+<li><strong>negative</strong>：即使用Negative Sampling时负采样的个数，默认是5。推荐在[3,10]之间。</li>
+<li><strong>cbow_mean</strong>: 仅用于CBOW在做投影的时候，为0，则算法中的为上下文的词向量之和，为1则为上下文的词向量的平均值。默认值是1，不推荐修改默认值。<ul>
+<li><strong>iter</strong>: 随机梯度下降法中迭代的最大次数，默认是5。对于大语料，可以增大这个值，在下文的语料中，我使用5次，训练的效果不是很好。</li>
+</ul>
+</li>
+<li><strong>alpha</strong>: 是初始的学习速率，在训练过程中会线性地递减到min_alpha。在随机梯度下降法中迭代的初始学习率，默认是0.025。</li>
+<li><strong>min_alpha</strong>: 由于算法支持在迭代的过程中逐渐减小学习率，min_alpha给出了最小的学习率。随机梯度下降中每轮的迭代步长可以由iter，alpha， min_alpha一起得出。对于大语料，需要对alpha, min_alpha,iter一起调参，来选择合适的三个值。</li>
+<li><strong>max_vocab_size</strong>: 设置词向量构建期间的RAM限制，设置成None则没有限制。</li>
+<li><strong>sample</strong>: 高频词汇的随机降采样的配置阈值，默认为1e-3，范围是(0,1e-5)。</li>
+<li><strong>seed</strong>：用于随机数发生器。与初始化词向量有关。</li>
+<li><strong>workers</strong>：用于控制训练的并行数。</li>
+<li><strong>sg</strong>: 即我们的word2vec两个模型的选择了。如果是0， 则是CBOW模型，是1则是Skip-Gram模型，默认是0即CBOW模型。</li>
+<li><strong>hs</strong>: 即我们的word2vec两个解法的选择了，如果是0， 则是Negative Sampling，是1的话并且负采样个数negative大于0， 则是Hierarchical Softmax。默认是0即Negative Sampling。</li>
+<li><strong>negative</strong>:如果大于零，则会采用negativesampling，用于设置多少个noise words（一般是5-20）。</li>
+<li><strong>hashfxn</strong>：hash函数来初始化权重，默认使用python的hash函数。</li>
+<li><strong>batch_words</strong>：每一批的传递给线程的单词的数量，默认为10000。</li>
+<li><strong>trim_rule</strong>：用于设置词汇表的整理规则，指定那些单词要留下，哪些要被删除。可以设置为None（min_count会被使用）。</li>
+<li><strong>sorted_vocab</strong>： 如果为1（默认），则在分配word index 的时候会先对单词基于频率降序排序。</li>
+</ul>
+<h2 id="1-2-gensim训练word2vec词向量步骤"><a href="#1-2-gensim训练word2vec词向量步骤" class="headerlink" title="1.2 gensim训练word2vec词向量步骤"></a>1.2 gensim训练word2vec词向量步骤</h2><p>使用Gensim训练Word2vec十分方便，训练步骤如下：</p>
+<ul>
+<li>1）将语料库预处理：一行一个文档或句子，将文档或句子分词（以空格分割，英文可以不用分词，英文单词之间已经由空格分割，中文预料需要使用分词工具进行分词，常见的分词工具有StandNLP、ICTCLAS、Ansj、FudanNLP、HanLP、结巴分词等）；</li>
+<li>2）将原始的训练语料转化成一个sentence的迭代器，每一次迭代返回的sentence是一个word（utf8格式）的列表。可以使用Gensim中word2vec.py中的LineSentence()方法实现；</li>
+<li>3）将上面处理的结果输入Gensim内建的word2vec对象进行训练即可。</li>
+</ul>
+<h1 id="2-训练搜狗语料"><a href="#2-训练搜狗语料" class="headerlink" title="2 训练搜狗语料"></a>2 训练搜狗语料</h1><p>语料：搜狗实验室新闻作为训练语料   搜狗实验室：<a href="http://www.sogou.com/labs/resource/ca.php" target="_blank" rel="noopener">http://www.sogou.com/labs/resource/ca.php</a><br>我下载的是完整版，一共600多M，解压后1个多G，可以在首页看看数据的格式。<br>==注意下载时需要登记信息==<br>解压后的数据是<code>news_sohusite_xml.dat</code>，这是gbk格式的数据，需要将编码转换成utf-8格式，并且只需要content的内容，其他的都不需要，这个时候就需要使用linux命令来解决，由于我的系统是windows10，需要下载一个WSL来运行linux命令。具体的见我的博客：<br><a href="https://blog.csdn.net/Elenstone/article/details/105285524" target="_blank" rel="noopener">windows下使用Linux命令</a><br>取出<content>  </content> 中的内容，在linux下执行如下命令：<br><code>cat news_sohusite_xml.dat | iconv -f gbk -t utf-8 -c | grep &quot;&lt;content&gt;&quot;  &gt; corpus.txt</code><br>得到了1.71个G的<code>corpus.txt</code>文件，文件太大记事本打不开这个文件。<br>注意以下所有程序都在jupyter notebook中运行，jupyter notebook下载可以通过Anaconda来实现，见：<br><a href="https://blog.csdn.net/Elenstone/article/details/105120661" target="_blank" rel="noopener">Windows 10下的Anaconda安装与使用</a></p>
+<h2 id="2-1-分词"><a href="#2-1-分词" class="headerlink" title="2.1 分词"></a>2.1 分词</h2><p>送给word2vec的文件是需要分词的，分词可以采用jieba分词实现，安装jieba 分词<br>使用<code>pip install jieba</code>对原始文本进行分词：</p>
+<pre class="line-numbers language-python"><code class="language-python">file_path <span class="token operator">=</span> <span class="token string">'./corpus.txt'</span>
+file_segment_path <span class="token operator">=</span> <span class="token string">'./corpus_segment.txt'</span>
+train_file_read <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+<span class="token keyword">with</span> open<span class="token punctuation">(</span>file_path<span class="token punctuation">,</span> <span class="token string">'r'</span><span class="token punctuation">,</span> encoding<span class="token operator">=</span><span class="token string">'utf-8'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
+    <span class="token keyword">for</span> line <span class="token keyword">in</span> f<span class="token punctuation">.</span>readlines<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        train_file_read<span class="token punctuation">.</span>append<span class="token punctuation">(</span>line<span class="token punctuation">)</span>
+train_file_read<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>得到：<br><img src="https://img-blog.csdnimg.cn/2020040310062574.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><code>print(len(train_file_read))</code>查看一共有多少段话，输出1411996。</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> jieba
+<span class="token comment" spellcheck="true"># jieba分词后保存在列表中</span>
+train_file_seg <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+<span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span>len<span class="token punctuation">(</span>train_file_read<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    train_file_seg<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">' '</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>list<span class="token punctuation">(</span>jieba<span class="token punctuation">.</span>cut<span class="token punctuation">(</span>train_file_read<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">9</span><span class="token punctuation">:</span><span class="token operator">-</span><span class="token number">11</span><span class="token punctuation">]</span><span class="token punctuation">,</span> cut_all<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> i <span class="token operator">%</span> <span class="token number">100</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span>
+train_file_seg<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>分词会花费一个多小时</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># 保存分词结果到文件中</span>
+<span class="token keyword">with</span> open<span class="token punctuation">(</span>file_segment_path<span class="token punctuation">,</span> <span class="token string">'w'</span><span class="token punctuation">,</span> encoding<span class="token operator">=</span><span class="token string">'utf-8'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span>len<span class="token punctuation">(</span>train_file_seg<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>train_file_seg<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span>
+        f<span class="token punctuation">.</span>write<span class="token punctuation">(</span><span class="token string">'\n'</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># 加载分词</span>
+seg_sentences <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+<span class="token keyword">with</span> open<span class="token punctuation">(</span>file_segment_path<span class="token punctuation">,</span> <span class="token string">'r'</span><span class="token punctuation">,</span> encoding<span class="token operator">=</span><span class="token string">'utf-8'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
+    seg_sentences <span class="token operator">=</span> f<span class="token punctuation">.</span>readlines<span class="token punctuation">(</span><span class="token punctuation">)</span>
+seg_sentences<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="https://img-blog.csdnimg.cn/20200403100845878.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>可以看到有空白段<br>除去空白段<br><img src="https://img-blog.csdnimg.cn/20200403100934910.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>一共还剩1298156段话<br><img src="https://img-blog.csdnimg.cn/20200403100953318.png" alt="在这里插入图片描述"></p>
+<h2 id="2-2-构建词向量"><a href="#2-2-构建词向量" class="headerlink" title="2.2 构建词向量"></a>2.2 构建词向量</h2><p><img src="https://img-blog.csdnimg.cn/20200403101053202.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>训练会花费一个多小时</p>
+<h2 id="2-3-保存和加载模型"><a href="#2-3-保存和加载模型" class="headerlink" title="2.3 保存和加载模型"></a>2.3 保存和加载模型</h2><p><img src="https://img-blog.csdnimg.cn/20200403101133792.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h2 id="2-4-词向量使用"><a href="#2-4-词向量使用" class="headerlink" title="2.4 词向量使用"></a>2.4 词向量使用</h2><p><img src="https://img-blog.csdnimg.cn/2020040310121470.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>注意<code>model.similarity</code>在以前也是可以使用的，新版本需要<code>model.wv.similarity</code></p>
+<h1 id="3-二维空间显示词向量"><a href="#3-二维空间显示词向量" class="headerlink" title="3 二维空间显示词向量"></a>3 二维空间显示词向量</h1><p>见我的<a href="https://github.com/CodingMarathon/NLP/tree/master/%E8%AF%8D%E5%90%91%E9%87%8F/word2vec" target="_blank" rel="noopener">github</a></p>
 
             </div>
             <hr />
@@ -652,9 +725,9 @@
             <br/>
             <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
                   property="dct:title" rel="dct:type">
-                    《Word2Vec详解》
+                    《gensim训练word2vec词向量》
                 </span> 由
-            <a xmlns:cc="http://creativecommons.org/ns#" href="/2020/03/29/word2vec-xiang-jie/" property="cc:attributionName"
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2020/04/03/gensim-xun-lian-word2vec-ci-xiang-liang/" property="cc:attributionName"
                rel="cc:attributionURL">
                 CodingMarathon
             </a> 采用
@@ -695,7 +768,7 @@
         repo: 'CodingMarathon.github.io',
         owner: 'CodingMarathon',
         admin: "CodingMarathon",
-        id: '2020/03/29/word2vec-xiang-jie/',
+        id: '2020/04/03/gensim-xun-lian-word2vec-ci-xiang-liang/',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -978,9 +1051,10 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="fa fa-dot-circle-o"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2020/04/03/gensim-xun-lian-word2vec-ci-xiang-liang/">
                     <div class="card-image">
@@ -999,14 +1073,15 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="fa fa-clock-o fa-fw icon-date"></i>2020-04-03
-                        </span>
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-04-03
+                            </span>
                         <span class="publish-author">
                             
                         </span>
                     </div>
                 </div>
+
                 
             </div>
         </div>
@@ -1017,25 +1092,25 @@
                 下一篇&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/03/26/crf/">
+                <a href="/2020/03/29/word2vec-xiang-jie/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="crf">
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="Word2Vec详解">
                         
-                        <span class="card-title">crf</span>
+                        <span class="card-title">Word2Vec详解</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            ﻿@toc
-0 前言​        条件随机场（conditional random field，CRF）是给定一组输入随机变量条件下另一组输出随机变量的条件概率分布模型，其特点是假设输出随机变量构成马尔科夫随机场。本文主要讨论它在标注问
+                            ﻿本文主要转自word2vec 中的数学原理详解（一）目录和前言，原文讲的十分透彻但是是分开的，所以将它合并在一起，记录在自己的专栏里，防止忘记。
+
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-03-26
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-03-29
                             </span>
                         <span class="publish-author">
                             
