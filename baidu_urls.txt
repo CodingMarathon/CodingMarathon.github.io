@@ -1,3 +1,6 @@
+https://CodingMarathon.github.io/2020/04/04/ci-dai-mo-xing-xiang-jie/
+https://CodingMarathon.github.io/2020/04/04/tf-idf-xiang-jie/
+https://CodingMarathon.github.io/2020/04/04/one-hot-bian-ma-xiang-jie/
 https://CodingMarathon.github.io/2020/04/03/gensim-xun-lian-word2vec-ci-xiang-liang/
 https://CodingMarathon.github.io/2020/03/29/word2vec-xiang-jie/
 https://CodingMarathon.github.io/2020/03/26/crf/

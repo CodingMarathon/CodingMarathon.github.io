@@ -4,10 +4,10 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="Word2Vec详解, BUAA NLP DeepLearning Knowledge Graph">
+    <meta name="keywords" content="词袋模型详解, BUAA NLP DeepLearning Knowledge Graph">
     <meta name="baidu-site-verification" content="YBVxcnPira">
-    <meta name="description" content="﻿本文主要转自word2vec 中的数学原理详解（一）目录和前言，原文讲的十分透彻但是是分开的，所以将它合并在一起，记录在自己的专栏里，防止忘记。
-">
+    <meta name="description" content="前言&amp;emsp;&amp;emsp;自然语言处理面临的文本数据往往是非结构化杂乱无章的文本数据，而机器学习算法处理的数据往往是固定长度的输入和输出。因而机器学习并不能直接处理原始的文本数据。必须把文本数据转换成数字，比如向量。
+在Neural Ne">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -15,7 +15,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Word2Vec详解 | CodingMarathon</title>
+    <title>词袋模型详解 | CodingMarathon</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -328,13 +328,13 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/17.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/15.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        Word2Vec详解
+                        词袋模型详解
                     </div>
                 </div>
             </div>
@@ -456,7 +456,7 @@
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-03-29
+                    2020-04-04
                 </div>
 
                 <div class="post-author info-break-policy">
@@ -470,14 +470,14 @@
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    57
+                    1.6k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    5 分
                 </div>
                 
                 
@@ -493,7 +493,55 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>﻿本文主要转自<a href="https://blog.csdn.net/itplus/article/details/37969519" target="_blank" rel="noopener">word2vec 中的数学原理详解（一）目录和前言</a>，原文讲的十分透彻但是是分开的，所以将它合并在一起，记录在自己的专栏里，防止忘记。<br><img src="https://img-blog.csdnimg.cn/20200329160551487.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/2020032916061275.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329160651619.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/2020032916070765.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329160721869.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/2020032916073880.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329160752449.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329160803667.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329160818107.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329160858512.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329160910158.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329160922970.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329160933282.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329160945841.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329160957816.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161008327.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161018612.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161031754.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161044304.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/2020032916105775.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161107588.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161118933.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161129956.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161141716.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161152682.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161238998.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161252728.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161306384.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161316534.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161328812.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161338498.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161349310.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161400810.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161412983.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161423118.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161434643.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161445284.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161457388.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161512147.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161523562.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161534737.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161544249.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161600234.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161622676.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161635434.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161645265.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+                <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>&emsp;&emsp;自然语言处理面临的文本数据往往是非结构化杂乱无章的文本数据，而机器学习算法处理的数据往往是固定长度的输入和输出。因而机器学习并不能直接处理原始的文本数据。必须把文本数据转换成数字，比如向量。</p>
+<p>在Neural Network Methods in Natural Language Processing, 2017一书65页有一句话：<br><code>在语言处理中，往往使用向量x来表示文本的大量语言学特性。</code><br>这个过程就叫做特征提取或者特征编码。一种流行并且简单的特征提取方法就是词袋模型。<br>&emsp;&emsp;在自然语言处理和文本分析的问题中，词袋模型和词向量（Word Embedding）是两种最常用的模型。更准确地说，词向量只能表征单个词，如果要表示文本，需要做一些额外的处理。下面详细聊一聊词袋模型。</p>
+<h1 id="词袋模型"><a href="#词袋模型" class="headerlink" title="词袋模型"></a>词袋模型</h1><p>&emsp;&emsp;词袋模型（Bag-of-Words model，BOW）BoW(Bag of Words)词袋模型最初被用在文本分类中，将文档表示成<strong>特征矢量</strong>。它的基本思想是假定对于一个文本，忽略其词序和语法、句法，仅仅将其看做是一些词汇的集合，而文本中的每个词汇都是独立的。简单说就是讲每篇文档都看成一个袋子（因为里面装的都是词汇，所以称为词袋，Bag of words即因此而来），然后看这个袋子里装的都是些什么词汇，将其分类。如果文档中猪、马、牛、羊、山谷、土地、拖拉机这样的词汇多些，而银行、大厦、汽车、公园这样的词汇少些，我们就倾向于判断它是一篇描绘乡村的文档，而不是描述城镇的。</p>
+<p>例如三个句子如下：</p>
+<pre><code>句子1：小孩喜欢吃零食。
+句子2：小孩喜欢玩游戏，不喜欢运动。
+句子3 ：大人不喜欢吃零食，喜欢运动。</code></pre><p>&emsp;&emsp;首先根据<strong>语料</strong>中出现的句子分词，然后构建<strong>词袋</strong>（每一个出现的词都加进来）。计算机不认识字，只认识数字，那在计算机中怎么表示词袋模型呢？其实很简单，给每个词一个位置索引就可以了。小孩放在第一个位置，喜欢放在第二个位置，以此类推。</p>
+<pre><code>{“小孩”:1，“喜欢”:2，“吃”:3，“零食”:4，“玩”:5，“游戏”:6，“大人”:7，“不”:8，“运动”:9}</code></pre><p>其中key为词，value为词的索引，预料中共有9个单词， 那么每个文本我们就可以使用一个9维的向量来表示。<br>如果文本中含有的一个词出现了一次，就让那个词的位置置为1，词出现几次就置为几，那么上述文本可以表示为：</p>
+<pre><code>句子1：[1,1,1,1,0,0,0,0,0]
+句子2：[1,2,0,0,1,1,0,1,1]
+句子3：[0,2,1,1,0,0,1,1,1]</code></pre><p>该向量与原来文本中单词出现的顺序没有关系，仅仅是词典中每个单词在文本中出现的频率。<br>&emsp;&emsp;与词袋模型非常类似的一个模型是词集模型(Set of Words,简称SoW)，和词袋模型唯一的不同是它仅仅考虑词是否在文本中出现，而不考虑词频。也就是一个词在文本在文本中出现1次和多次特征处理是一样的。在大多数时候，我们使用词袋模型。</p>
+<h1 id="词袋模型的作用"><a href="#词袋模型的作用" class="headerlink" title="词袋模型的作用"></a>词袋模型的作用</h1><p>&emsp;&emsp;将两篇文本通过词袋模型变为向量模型，通过计算向量的余弦距离来计算两个文本间的相似度。<br>词袋模型的缺点：</p>
+<ul>
+<li>词袋模型最重要的是构造词库，需要维护一个很大的词库。</li>
+<li>词袋模型严重缺乏相似词之间的表达。<ul>
+<li>“我喜欢北京”“我不喜欢北京”其实这两个文本是严重不相似的。但词袋模型会判为高度相似。</li>
+<li>“我喜欢北京”与“我爱北京”其实表达的意思是非常非常的接近的，但词袋模型不能表示“喜欢”和“爱”之间严重的相似关系。（当然词袋模型也能给这两句话很高的相似度，但是注意我想表达的含义）</li>
+</ul>
+</li>
+<li>向量稀疏</li>
+</ul>
+<p>为了让词袋模型能够表达更多语义，尝试使用n元语法来构建词袋模型。n表示聚合的词个数，比如2就表示2个2个聚合在一起，叫做2元模型。<br>例如：</p>
+<pre><code>“我，喜欢”
+“喜欢，北京”
+...</code></pre><p>n元模型比词袋模型在某些任务上表现得更好，比如文档分类，但也会带来麻烦。</p>
+<h1 id="词袋模型的实现"><a href="#词袋模型的实现" class="headerlink" title="词袋模型的实现"></a>词袋模型的实现</h1><p>&emsp;&emsp;对于中文来说，词袋模型首先会进行分词，在分词之后，通过统计每个词在文本中出现的次数，我们就可以得到该文本基于词的特征，如果将各个文本样本的这些词与对应的词频放在一起，就是我们常说的向量化。向量化完毕后一般也会使用TF-IDF进行特征的权重修正，再将特征进行标准化。 再进行一些其他的特征工程后，就可以将数据带入机器学习算法进行分类聚类了。</p>
+<p>为了实现方便，本文使用英文来介绍怎么实现。</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true">#  操作词袋模型：</span>
+<span class="token comment" spellcheck="true"># CountVectorizer：对语料库中出现的词汇进行词频统计，相当于词袋模型。</span>
+<span class="token comment" spellcheck="true"># 操作方式：将语料库当中出现的词汇作为特征，将词汇在当前文档中出现的频率（次数）作为特征值。</span>
+<span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+<span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>feature_extraction<span class="token punctuation">.</span>text <span class="token keyword">import</span> CountVectorizer
+count <span class="token operator">=</span> CountVectorizer<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true"># 语料库</span>
+docs <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span><span class="token punctuation">[</span>
+    <span class="token string">"Where there is a will, there is a way."</span><span class="token punctuation">,</span>
+    <span class="token string">"There is no royal road to learning."</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># bag是一个稀疏的矩阵。因为词袋模型就是一种稀疏的表示。</span>
+bag <span class="token operator">=</span> count<span class="token punctuation">.</span>fit_transform<span class="token punctuation">(</span>docs<span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># 输出单词与编号的映射关系。</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>count<span class="token punctuation">.</span>vocabulary_<span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># 调用稀疏矩阵的toarray方法，将稀疏矩阵转换为ndarray对象。</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>bag<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>bag<span class="token punctuation">.</span>toarray<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true"># where映射为编号8  there映射为编号5······</span>
+<span class="token comment" spellcheck="true"># 编号也是bag.toarray转换来的ndarray数组的索引</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
             </div>
             <hr />
@@ -652,9 +700,9 @@
             <br/>
             <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
                   property="dct:title" rel="dct:type">
-                    《Word2Vec详解》
+                    《词袋模型详解》
                 </span> 由
-            <a xmlns:cc="http://creativecommons.org/ns#" href="/2020/03/29/word2vec-xiang-jie/" property="cc:attributionName"
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2020/04/04/ci-dai-mo-xing-xiang-jie/" property="cc:attributionName"
                rel="cc:attributionURL">
                 CodingMarathon
             </a> 采用
@@ -695,7 +743,7 @@
         repo: 'CodingMarathon.github.io',
         owner: 'CodingMarathon',
         admin: "CodingMarathon",
-        id: '2020/03/29/word2vec-xiang-jie/',
+        id: '2020/04/04/ci-dai-mo-xing-xiang-jie/',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -978,34 +1026,37 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="fa fa-dot-circle-o"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2020/04/03/gensim-xun-lian-word2vec-ci-xiang-liang/">
+                <a href="/2020/04/04/ci-dai-mo-xing-xiang-jie/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="gensim训练word2vec词向量">
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="词袋模型详解">
                         
-                        <span class="card-title">gensim训练word2vec词向量</span>
+                        <span class="card-title">词袋模型详解</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            0 前言《词向量之Word2Vec数学原理以及源代码详解》很好的讲解了Word2Vec的原理以及一些源码的解读，Word2Vec的词向量有两种方式实现，一种是谷歌大佬们自己写的word2vec，还有一个是gensim库，由于大多数人使用的是
+                            前言&emsp;&emsp;自然语言处理面临的文本数据往往是非结构化杂乱无章的文本数据，而机器学习算法处理的数据往往是固定长度的输入和输出。因而机器学习并不能直接处理原始的文本数据。必须把文本数据转换成数字，比如向量。
+在Neural Ne
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="fa fa-clock-o fa-fw icon-date"></i>2020-04-03
-                        </span>
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-04-04
+                            </span>
                         <span class="publish-author">
                             
                         </span>
                     </div>
                 </div>
+
                 
             </div>
         </div>
@@ -1016,24 +1067,24 @@
                 下一篇&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/03/26/crf/">
+                <a href="/2020/04/04/tf-idf-xiang-jie/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="CRF详解">
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="TF-IDF详解">
                         
-                        <span class="card-title">CRF详解</span>
+                        <span class="card-title">TF-IDF详解</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            0 前言​        条件随机场（conditional random field，CRF）是给定一组输入随机变量条件下另一组输出随机变量的条件概率分布模型，其特点是假设输出随机变量构成马尔科夫随机场。本文主要讨论它在标注问题上的应用，
+                            0 前言前面介绍了词向量的One-Hot模型以及词袋模型，这都是为了将离散符号表示的文本转换成数字表示，以提供给后续机器学习算法的使用。词向量之One-Hot编码详解词向量之词袋模型（BOW）详解本文主要介绍另一种词向量的表示方法：TF-I
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-03-26
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-04-04
                             </span>
                         <span class="publish-author">
                             

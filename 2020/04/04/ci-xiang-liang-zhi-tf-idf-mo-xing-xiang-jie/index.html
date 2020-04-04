@@ -4,10 +4,9 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="Word2Vec详解, BUAA NLP DeepLearning Knowledge Graph">
+    <meta name="keywords" content="BUAA NLP DeepLearning Knowledge Graph">
     <meta name="baidu-site-verification" content="YBVxcnPira">
-    <meta name="description" content="﻿本文主要转自word2vec 中的数学原理详解（一）目录和前言，原文讲的十分透彻但是是分开的，所以将它合并在一起，记录在自己的专栏里，防止忘记。
-">
+    <meta name="description" content="title: 词向量之TF-IDF模型详解top: falsecover: falsetoc: truemathjax: truedate: 2020-03-29 16:52:35password:summary:tags:categori">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -15,7 +14,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Word2Vec详解 | CodingMarathon</title>
+    <title>CodingMarathon</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -328,13 +327,13 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/17.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/6.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        Word2Vec详解
+                        
                     </div>
                 </div>
             </div>
@@ -456,7 +455,7 @@
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-03-29
+                    2020-04-04
                 </div>
 
                 <div class="post-author info-break-policy">
@@ -470,14 +469,14 @@
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    57
+                    2.6k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    10 分
                 </div>
                 
                 
@@ -493,7 +492,204 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>﻿本文主要转自<a href="https://blog.csdn.net/itplus/article/details/37969519" target="_blank" rel="noopener">word2vec 中的数学原理详解（一）目录和前言</a>，原文讲的十分透彻但是是分开的，所以将它合并在一起，记录在自己的专栏里，防止忘记。<br><img src="https://img-blog.csdnimg.cn/20200329160551487.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/2020032916061275.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329160651619.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/2020032916070765.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329160721869.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/2020032916073880.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329160752449.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329160803667.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329160818107.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329160858512.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329160910158.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329160922970.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329160933282.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329160945841.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329160957816.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161008327.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161018612.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161031754.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161044304.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/2020032916105775.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161107588.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161118933.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161129956.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161141716.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161152682.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161238998.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161252728.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161306384.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161316534.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161328812.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161338498.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161349310.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161400810.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161412983.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161423118.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161434643.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161445284.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161457388.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161512147.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161523562.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161534737.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161544249.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161600234.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161622676.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161635434.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161645265.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+                <p>title: 词向量之TF-IDF模型详解<br>top: false<br>cover: false<br>toc: true<br>mathjax: true<br>date: 2020-03-29 16:52:35<br>password:<br>summary:<br>tags:<br>categories:</p>
+<h1 id="0-前言"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言</h1><p>前面介绍了词向量的One-Hot模型以及词袋模型，这都是为了将离散符号表示的文本转换成数字表示，以提供给后续机器学习算法的使用。<br><a href="https://blog.csdn.net/Elenstone/article/details/105110110" target="_blank" rel="noopener">词向量之One-Hot编码详解</a><br><a href="https://blog.csdn.net/Elenstone/article/details/105134863" target="_blank" rel="noopener">词向量之词袋模型（BOW）详解</a><br>本文主要介绍另一种词向量的表示方法：TF-IDF。</p>
+<h1 id="1-TF-IDF模型"><a href="#1-TF-IDF模型" class="headerlink" title="1 TF-IDF模型"></a>1 TF-IDF模型</h1><p>&emsp;&emsp;现有一个问题，怎么表示一个词在文档中的重要性？<br>&emsp;&emsp;首先想的是文档中出现越多的词对文章来说就越重要，也就是说词在文档中的频率越大越重要，这里用TF（term frequency）来表示。但是又出现了另一个问题，“的”，“了”，“吗”这种词出现在文档中的频率一般也很高，但是它们又不带有实际意义，所以为了降低这些词的重要性，引入了IDF（inverse document frequency），若一个词在语料库中的很多文档中都出现，那么就让这个词的重要性降低一些。由此便产生了TF-IDF模型。</p>
+<h2 id="1-1-TF-IDF数学形式"><a href="#1-1-TF-IDF数学形式" class="headerlink" title="1.1 TF-IDF数学形式"></a>1.1 TF-IDF数学形式</h2><ul>
+<li><p>TF：单词在某一篇文章中的词频，一个词在文章中出现的频率，此处文章可以是一个句子，也可以是一整篇文章。<br>$$<br>TF(d,w)=\frac{N(w)}{N(d)}<br>$$<br>其中$N(w)$表示$d$这篇文章中词$w$的总数，$N(d)$表示文档$d$中的词的总数。<br>除此之外还有其他计算方式：</p>
+<ul>
+<li>二值：如果词出现在一篇文档中，则$N(w)$为1，否则为0</li>
+<li>对数化：$TF(d,w)=\log{(1+N(w))}$</li>
+<li>双重标准化0.5：让词的频数除以该篇文档中最高频词的频数$TF(d,w)=0.5+0.5\times\frac{N(w)}{\max\limits_wN(w)}$，这样做是为了避免偏向语料库中的长文档。</li>
+<li>双重标准化K：将上面方法中的0.5更换成$K\in [0,1]$，则$TF(d,w)=K+(1-K)\times\frac{N(w)}{\max\limits_wN(w)}$</li>
+</ul>
+</li>
+<li><p>IDF：逆文档频率，指的是含有这个单词的文章占语料库中所有文章总数的比例的倒数。<br>$$IDF(w)=\log{\frac{N}{N(w)}}$$<br>其中，$N$指的是语料库中所有文档的总数，$N(w)$指的是语料库中含有词$w$的文档的总数。<br>除此之外还有其他计算方式：</p>
+<ul>
+<li>一元化：恒为1，不考虑IDF只考虑TF。</li>
+<li>平滑的IDF：为了避免由于词没有出现在语料库中而发生的除0错误$IDF(w)=\log{(\frac{N}{1+N(w)})}$。</li>
+<li>最大逆文档频率（inverse document frequency max）：遍历指定文档中的词，计算在语料库中包含该词的文档总数，取最大值，则$IDF(w)=\log{(\frac{\max\limits_{t\in d}N(t)}{1+N(w)})}$</li>
+<li>概率逆文档频率：将分母替换成$N-N(w)$，则$IDF(w)=\log{\frac{N-N(w)}{N(w)}}$</li>
+</ul>
+</li>
+</ul>
+<p>TF-IDF是TF乘以IDF：<br>$$TF-IDF(w)=TF(d,w)\times IDF(w)$$</p>
+<h2 id="1-2-举例"><a href="#1-2-举例" class="headerlink" title="1.2 举例"></a>1.2 举例</h2><p>举例输入：<br>文档1：我 爱 技术 人民。<br>文档2：我 爱 电脑。<br>文档3：我 爱 加班 的 人民。<br>计算TF：每篇文档的词频，例如文档1，“我”的词频就是$1/4=0.5$<br>计算DF：文档频率，“人民”在三篇文档中出现了两次，所以$DF=2/3=0.66667$<br>计算IDF:逆文档频率，”人民”$IDF=\frac{1}{DF}=3/2=1.5$</p>
+<p>注意：<br>==TF是针对一篇文档而言；IDF是对整个语料库而言的。==</p>
+<h1 id="2-TF-IDF的实现"><a href="#2-TF-IDF的实现" class="headerlink" title="2 TF-IDF的实现"></a>2 TF-IDF的实现</h1><h2 id="2-1-TF-IDF简单python实现"><a href="#2-1-TF-IDF简单python实现" class="headerlink" title="2.1 TF-IDF简单python实现"></a>2.1 TF-IDF简单python实现</h2><pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+
+
+<span class="token keyword">class</span> <span class="token class-name">TFIDF</span><span class="token punctuation">(</span>object<span class="token punctuation">)</span><span class="token punctuation">:</span>
+
+    <span class="token triple-quoted-string string">"""
+    手写一个TFIDF统计类,只写最简单的一个实现
+    """</span>
+
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> corpus<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">"""
+        初始化
+        self.vob:词汇个数统计，dict格式
+        self.word_id:词汇编码id，dict格式
+        self.smooth_idf：平滑系数，关于平滑不多解释了
+        :param corpus:输入的语料
+        """</span>
+        self<span class="token punctuation">.</span>word_id <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+        self<span class="token punctuation">.</span>vob <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+        self<span class="token punctuation">.</span>corpus <span class="token operator">=</span> corpus
+        self<span class="token punctuation">.</span>smooth_idf <span class="token operator">=</span> <span class="token number">0.01</span>
+
+    <span class="token keyword">def</span> <span class="token function">fit_transform</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> corpus<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">pass</span>
+
+    <span class="token keyword">def</span> <span class="token function">get_vob_fre</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">"""
+        计算文本特特征的出现次数，也就是文本频率term frequency，但是没有除token总数，因为后面bincount计算不支持float
+        :return: 修改self.vob也就是修改词频统计字典
+        """</span>
+        <span class="token comment" spellcheck="true"># 统计各词出现个数</span>
+        id <span class="token operator">=</span> <span class="token number">0</span>
+        <span class="token keyword">for</span> single_corpus <span class="token keyword">in</span> self<span class="token punctuation">.</span>corpus<span class="token punctuation">:</span>
+            <span class="token keyword">if</span> isinstance<span class="token punctuation">(</span>single_corpus<span class="token punctuation">,</span> list<span class="token punctuation">)</span><span class="token punctuation">:</span>
+                <span class="token keyword">pass</span>
+            <span class="token keyword">if</span> isinstance<span class="token punctuation">(</span>single_corpus<span class="token punctuation">,</span> str<span class="token punctuation">)</span><span class="token punctuation">:</span>
+                single_corpus <span class="token operator">=</span> single_corpus<span class="token punctuation">.</span>strip<span class="token punctuation">(</span><span class="token string">"\n"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">" "</span><span class="token punctuation">)</span>
+            <span class="token keyword">for</span> word <span class="token keyword">in</span> single_corpus<span class="token punctuation">:</span>
+                <span class="token keyword">if</span> word <span class="token operator">not</span> <span class="token keyword">in</span> self<span class="token punctuation">.</span>vob<span class="token punctuation">:</span>
+                    self<span class="token punctuation">.</span>vob<span class="token punctuation">[</span>word<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span>
+                    self<span class="token punctuation">.</span>word_id<span class="token punctuation">[</span>word<span class="token punctuation">]</span> <span class="token operator">=</span> id
+                    id <span class="token operator">+=</span> <span class="token number">1</span>
+                <span class="token keyword">else</span><span class="token punctuation">:</span>
+                    self<span class="token punctuation">.</span>vob<span class="token punctuation">[</span>word<span class="token punctuation">]</span> <span class="token operator">+=</span> <span class="token number">1</span>
+
+        <span class="token comment" spellcheck="true"># 生成矩阵</span>
+        X <span class="token operator">=</span> np<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span><span class="token punctuation">(</span>len<span class="token punctuation">(</span>self<span class="token punctuation">.</span>corpus<span class="token punctuation">)</span><span class="token punctuation">,</span> len<span class="token punctuation">(</span>self<span class="token punctuation">.</span>vob<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span>len<span class="token punctuation">(</span>self<span class="token punctuation">.</span>corpus<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">if</span> isinstance<span class="token punctuation">(</span>self<span class="token punctuation">.</span>corpus<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> str<span class="token punctuation">)</span><span class="token punctuation">:</span>
+                single_corpus <span class="token operator">=</span> self<span class="token punctuation">.</span>corpus<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>strip<span class="token punctuation">(</span><span class="token string">"\n"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">" "</span><span class="token punctuation">)</span>
+            <span class="token keyword">else</span><span class="token punctuation">:</span>
+                single_corpus <span class="token operator">=</span> self<span class="token punctuation">.</span>corpus<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
+            <span class="token keyword">for</span> j <span class="token keyword">in</span> range<span class="token punctuation">(</span>len<span class="token punctuation">(</span>single_corpus<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                feature <span class="token operator">=</span> single_corpus<span class="token punctuation">[</span>j<span class="token punctuation">]</span>
+                feature_id <span class="token operator">=</span> self<span class="token punctuation">.</span>word_id<span class="token punctuation">[</span>feature<span class="token punctuation">]</span>
+                X<span class="token punctuation">[</span>i<span class="token punctuation">,</span> feature_id<span class="token punctuation">]</span> <span class="token operator">=</span> self<span class="token punctuation">.</span>vob<span class="token punctuation">[</span>feature<span class="token punctuation">]</span>
+        <span class="token keyword">return</span> X<span class="token punctuation">.</span>astype<span class="token punctuation">(</span>int<span class="token punctuation">)</span>  <span class="token comment" spellcheck="true"># 需要转化成int</span>
+
+    <span class="token keyword">def</span> <span class="token function">get_tf_idf</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">"""
+        计算idf并生成最后的TFIDF矩阵
+        :return:
+        """</span>
+        X <span class="token operator">=</span> self<span class="token punctuation">.</span>get_vob_fre<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        n_samples<span class="token punctuation">,</span> n_features <span class="token operator">=</span> X<span class="token punctuation">.</span>shape
+        df <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span>n_features<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token triple-quoted-string string">"""
+            这里是统计每个特征的非0的数量，也就是逆文档频率指数的分式中的分母，是为了计算idf
+            """</span>
+            df<span class="token punctuation">.</span>append<span class="token punctuation">(</span>n_samples <span class="token operator">-</span> np<span class="token punctuation">.</span>bincount<span class="token punctuation">(</span>X<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+        df <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span>df<span class="token punctuation">)</span>
+        <span class="token comment" spellcheck="true"># perform idf smoothing if required</span>
+        df <span class="token operator">+=</span> int<span class="token punctuation">(</span>self<span class="token punctuation">.</span>smooth_idf<span class="token punctuation">)</span>
+        n_samples <span class="token operator">+=</span> int<span class="token punctuation">(</span>self<span class="token punctuation">.</span>smooth_idf<span class="token punctuation">)</span>
+        idf <span class="token operator">=</span> np<span class="token punctuation">.</span>log<span class="token punctuation">(</span>n_samples <span class="token operator">/</span> df<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span>
+        <span class="token keyword">return</span> X<span class="token operator">*</span>idf<span class="token operator">/</span>len<span class="token punctuation">(</span>self<span class="token punctuation">.</span>vob<span class="token punctuation">)</span>
+
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
+    corpus <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token string">"我"</span><span class="token punctuation">,</span> <span class="token string">"a"</span><span class="token punctuation">,</span> <span class="token string">"e"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token string">"我"</span><span class="token punctuation">,</span> <span class="token string">"a"</span><span class="token punctuation">,</span> <span class="token string">"c"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token string">"我"</span><span class="token punctuation">,</span> <span class="token string">"a"</span><span class="token punctuation">,</span> <span class="token string">"b"</span><span class="token punctuation">]</span><span class="token punctuation">]</span>
+    test <span class="token operator">=</span> TFIDF<span class="token punctuation">(</span>corpus<span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>test<span class="token punctuation">.</span>get_tf_idf<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>为了避免分词，直接采用这种形式。</p>
+<h2 id="2-2-TF-IDF的gesim实现："><a href="#2-2-TF-IDF的gesim实现：" class="headerlink" title="2.2 TF-IDF的gesim实现："></a>2.2 TF-IDF的gesim实现：</h2><pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">from</span> gensim <span class="token keyword">import</span> corpora<span class="token punctuation">,</span>similarities<span class="token punctuation">,</span>models
+<span class="token keyword">import</span> jieba
+<span class="token comment" spellcheck="true">#第一步：确定语料库的语料和要进行判断的句子：</span>
+<span class="token comment" spellcheck="true">#wordlist作为语料库，语料库中有三句话，相当于三篇文章.比较sentences和wordlist中三句话的相似度</span>
+wordlist<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'我喜欢编程'</span><span class="token punctuation">,</span><span class="token string">'我想变漂亮'</span><span class="token punctuation">,</span><span class="token string">'今天吃午饭了吗'</span><span class="token punctuation">]</span>
+<span class="token comment" spellcheck="true">#注意这里是个字符串</span>
+sentenses<span class="token operator">=</span><span class="token string">'我喜欢什么'</span>
+<span class="token comment" spellcheck="true">#第二步：使用语料库建立词典，也就是给预料库中的每个单词标上序号，类似：{'我'：1，'喜欢'：2，'编程'：3,....}首先进行中文分词</span>
+text<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">[</span>word <span class="token keyword">for</span> word  <span class="token keyword">in</span> jieba<span class="token punctuation">.</span>cut<span class="token punctuation">(</span>words<span class="token punctuation">)</span> <span class="token punctuation">]</span><span class="token keyword">for</span> words <span class="token keyword">in</span> wordlist<span class="token punctuation">]</span>
+dictionary<span class="token operator">=</span>corpora<span class="token punctuation">.</span>Dictionary<span class="token punctuation">(</span>text<span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true">#第三步，对语料中的每个词进行词频统计,doc2bow是对每一句话进行词频统计，传入的是一个list</span>
+<span class="token comment" spellcheck="true">#corpus得到的是一个二维数组[[(0, 1), (1, 1), (2, 1)], [(3, 1), (4, 1)], [(5, 1), (6, 1), (7, 1), (8, 1), (9, 1)]]，意思是编号为0的词出现的频率是1次，编号为2的词出现的频率是1次</span>
+corpus<span class="token operator">=</span><span class="token punctuation">[</span>dictionary<span class="token punctuation">.</span>doc2bow<span class="token punctuation">(</span>word<span class="token punctuation">)</span> <span class="token keyword">for</span> word <span class="token keyword">in</span> text<span class="token punctuation">]</span>
+<span class="token comment" spellcheck="true">#第四步：使用corpus训练tfidf模型</span>
+model<span class="token operator">=</span>models<span class="token punctuation">.</span>TfidfModel<span class="token punctuation">(</span>corpus<span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true">#要是想要看tfidf的值的话可以:</span>
+
+tfidf<span class="token operator">=</span>model<span class="token punctuation">[</span>corpus<span class="token punctuation">]</span>
+<span class="token triple-quoted-string string">'''
+tfidf的结果是语料库中每个词的tfidf值
+[(0, 0.5773502691896258), (1, 0.5773502691896258), (2, 0.5773502691896258)]
+[(3, 0.7071067811865475), (4, 0.7071067811865475)]
+[(5, 0.4472135954999579), (6, 0.4472135954999579), (7, 0.4472135954999579), (8, 0.4472135954999579), (9, 0.4472135954999579)]
+'''</span>
+<span class="token comment" spellcheck="true">#第五步：为tfidf模型中的每个句子建立索引，便于进行相似度查询,传入的时候语料库的tfidf值</span>
+similarity<span class="token operator">=</span>similarities<span class="token punctuation">.</span>MatrixSimilarity<span class="token punctuation">(</span>tfidf<span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true">#第六步，处理要比较的句子，首先分词，其次获得词频，jieba只能传入字符串</span>
+sen<span class="token operator">=</span><span class="token punctuation">[</span>word <span class="token keyword">for</span> word <span class="token keyword">in</span> jieba<span class="token punctuation">.</span>cut<span class="token punctuation">(</span>sentenses<span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token operator">//</span>doc2传入的是一个列表
+sen2<span class="token operator">=</span>dictionary<span class="token punctuation">.</span>doc2bow<span class="token punctuation">(</span>sen<span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true">#然后计算它的tfidf值</span>
+sen_tfidf<span class="token operator">=</span>model<span class="token punctuation">[</span>sen2<span class="token punctuation">]</span>
+<span class="token comment" spellcheck="true">#获得与所有句子的相似度，sim输出的是一个数组</span>
+sim<span class="token operator">=</span>similarity<span class="token punctuation">[</span>sen_tfidf<span class="token punctuation">]</span>
+<span class="token comment" spellcheck="true">#获得最大值,转化成list进行操作，使用list的max函数</span>
+max_sim<span class="token operator">=</span>max<span class="token punctuation">(</span>list<span class="token punctuation">(</span>sim<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true">#获得最大值索引，使用list的index函数</span>
+max_index<span class="token operator">=</span>sim<span class="token punctuation">.</span>index<span class="token punctuation">(</span>max<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p> tfidf如何表示一个句子：<br>加入一个句子有n个单词，每个单词计算出它的tfidf值，即每个单词用一个标量表示，则句子的维度是1<em>n<br>如果是用embedding表示法，每个单词用m维向量表示，句子的维度是m</em>n<br>保存和加载模型的方法：</p>
+<pre><code># 保存词典：
+dictionary.save(DICT_PATH)
+# 保存tfidf模型
+model.save(MODEL_PATH)
+# 保存相似度
+similarity.save(SIMILARITY_PATH)
+# 加载词典：
+dictionary = corpora.Dictionary.load(&#39;require_files/dictionary.dict&#39;)
+# 加载模型
+tfidf = models.TfidfModel.load(&quot;require_files/my_model.tfidf&quot;)
+# 加载相似度
+index=similarities.MatrixSimilarity.load(&#39;require_files/similarities.0&#39;)</code></pre><h2 id="2-3-TF-IDF的sklearn实现"><a href="#2-3-TF-IDF的sklearn实现" class="headerlink" title="2.3 TF-IDF的sklearn实现"></a>2.3 TF-IDF的sklearn实现</h2><p>&emsp;&emsp;==sklearn==中计算TF-IDF的函数是<code>TfidfTransformer</code>和<code>TfidfVectorizer</code>，严格来说后者等于<code>CountVectorizer + TfidfTransformer</code>。<code>TfidfTransformer</code>和<code>TfidfVectorizer</code>有一些共同的参数，这些参数的不同影响了tfidf的计算方式：</p>
+<ul>
+<li><code>norm</code>：归一化，L1、L2（默认值）或者 None。L1 范数是向量中每个值除以所有值的绝对值的和，L2范数是向量中每个值除以所有值的平方开根号，即对于 L1：<br>$$x_i=\frac{x_i}{∣∣\boldsymbol{x}∣∣_1}=\frac{x_i}{\sum\limits_j∣x_j}$$<br>对于 l2：<br>$$x_i=\dfrac{x_i}{||\pmb x||_2} = \dfrac{x_i}{\sqrt{\sum\limits_j x^2_j}}$$</li>
+<li><code>use_idf</code>：bool，默认 True，是否使用 IDF;</li>
+<li><code>smooth_idf</code>：bool，默认True，是否平滑IDF，默认分子和分母都+1，和上述任何一种都不一样，防止除零错误;</li>
+<li><code>sublinear_tf</code>：bool，默认False，是否对TF使用 sublinear，即使用$1 + \log(TF)$来替换原始的TF。</li>
+</ul>
+<p>所以，默认参数下<code>（norm=&#39;l2&#39;, use_idf=True, smooth_idf=True, sublinear_tf=False）</code>，sklearn 是这么计算TF-IDF的：</p>
+<p>$$\begin{aligned}<br>tfidf(t,d,D)&amp;=tf(t,d)\times idf(t,D)\<br>&amp;=tf(t,d)\times (\log{(\frac{1+N}{1+N(w)})}+1)<br>\end{aligned}$$</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>feature_extraction<span class="token punctuation">.</span>text <span class="token keyword">import</span> CountVectorizer<span class="token punctuation">,</span> TfidfVectorizer<span class="token punctuation">,</span> TfidfTransformer
+
+corpus <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'This is the first document.'</span><span class="token punctuation">,</span>
+          <span class="token string">'This is the second second document.'</span><span class="token punctuation">,</span>
+          <span class="token string">'And the third one.'</span><span class="token punctuation">,</span>
+          <span class="token string">'Is this the first document?'</span><span class="token punctuation">]</span>
+<span class="token comment" spellcheck="true"># CountVectorizer是通过fit_transform函数将文本中的词语转换为词频矩阵</span>
+<span class="token comment" spellcheck="true"># get_feature_names()可看到所有文本的关键字</span>
+<span class="token comment" spellcheck="true"># vocabulary_可看到所有文本的关键字和其位置</span>
+<span class="token comment" spellcheck="true"># toarray()可看到词频矩阵的结果</span>
+vectorizer <span class="token operator">=</span> CountVectorizer<span class="token punctuation">(</span><span class="token punctuation">)</span>
+count <span class="token operator">=</span> vectorizer<span class="token punctuation">.</span>fit_transform<span class="token punctuation">(</span>corpus<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>vectorizer<span class="token punctuation">.</span>get_feature_names<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>vectorizer<span class="token punctuation">.</span>vocabulary_<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>count<span class="token punctuation">.</span>toarray<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true"># TfidfTransformer是统计CountVectorizer中每个词语的tf-idf权值</span>
+transformer <span class="token operator">=</span> TfidfTransformer<span class="token punctuation">(</span><span class="token punctuation">)</span>
+tfidf_matrix <span class="token operator">=</span> transformer<span class="token punctuation">.</span>fit_transform<span class="token punctuation">(</span>count<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>tfidf_matrix<span class="token punctuation">.</span>toarray<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true"># TfidfVectorizer可以把CountVectorizer, TfidfTransformer合并起来，直接生成tfidf值</span>
+<span class="token comment" spellcheck="true"># TfidfVectorizer的关键参数：</span>
+<span class="token comment" spellcheck="true"># max_df：这个给定特征可以应用在 tf-idf 矩阵中，用以描述单词在文档中的最高出现率。假设一个词（term）在 80% 的文档中都出现过了，那它也许（在剧情简介的语境里）只携带非常少信息。</span>
+<span class="token comment" spellcheck="true"># min_df：可以是一个整数（例如5）。意味着单词必须在 5 个以上的文档中出现才会被纳入考虑。设置为 0.2；即单词至少在 20% 的文档中出现 。</span>
+<span class="token comment" spellcheck="true"># ngram_range：这个参数将用来观察一元模型（unigrams），二元模型（ bigrams） 和三元模型（trigrams）。</span>
+tfidf_vec <span class="token operator">=</span> TfidfVectorizer<span class="token punctuation">(</span><span class="token punctuation">)</span>
+tfidf_matrix <span class="token operator">=</span> tfidf_vec<span class="token punctuation">.</span>fit_transform<span class="token punctuation">(</span>corpus<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>tfidf_vec<span class="token punctuation">.</span>get_feature_names<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>tfidf_vec<span class="token punctuation">.</span>vocabulary_<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>tfidf_matrix<span class="token punctuation">.</span>toarray<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
             </div>
             <hr />
@@ -652,9 +848,9 @@
             <br/>
             <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
                   property="dct:title" rel="dct:type">
-                    《Word2Vec详解》
+                    《》
                 </span> 由
-            <a xmlns:cc="http://creativecommons.org/ns#" href="/2020/03/29/word2vec-xiang-jie/" property="cc:attributionName"
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2020/04/04/ci-xiang-liang-zhi-tf-idf-mo-xing-xiang-jie/" property="cc:attributionName"
                rel="cc:attributionURL">
                 CodingMarathon
             </a> 采用
@@ -695,7 +891,7 @@
         repo: 'CodingMarathon.github.io',
         owner: 'CodingMarathon',
         admin: "CodingMarathon",
-        id: '2020/03/29/word2vec-xiang-jie/',
+        id: '2020/04/04/ci-xiang-liang-zhi-tf-idf-mo-xing-xiang-jie/',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -978,34 +1174,36 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="fa fa-dot-circle-o"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2020/04/03/gensim-xun-lian-word2vec-ci-xiang-liang/">
+                <a href="/2020/04/04/ci-xiang-liang-zhi-tf-idf-mo-xing-xiang-jie/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="gensim训练word2vec词向量">
+                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="">
                         
-                        <span class="card-title">gensim训练word2vec词向量</span>
+                        <span class="card-title"></span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            0 前言《词向量之Word2Vec数学原理以及源代码详解》很好的讲解了Word2Vec的原理以及一些源码的解读，Word2Vec的词向量有两种方式实现，一种是谷歌大佬们自己写的word2vec，还有一个是gensim库，由于大多数人使用的是
+                            title: 词向量之TF-IDF模型详解top: falsecover: falsetoc: truemathjax: truedate: 2020-03-29 16:52:35password:summary:tags:categori
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="fa fa-clock-o fa-fw icon-date"></i>2020-04-03
-                        </span>
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-04-04
+                            </span>
                         <span class="publish-author">
                             
                         </span>
                     </div>
                 </div>
+
                 
             </div>
         </div>
@@ -1016,24 +1214,25 @@
                 下一篇&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/03/26/crf/">
+                <a href="/2020/04/04/ci-xiang-liang-zhi-ci-dai-mo-xing-bow-xiang-jie/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="CRF详解">
+                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="">
                         
-                        <span class="card-title">CRF详解</span>
+                        <span class="card-title"></span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            0 前言​        条件随机场（conditional random field，CRF）是给定一组输入随机变量条件下另一组输出随机变量的条件概率分布模型，其特点是假设输出随机变量构成马尔科夫随机场。本文主要讨论它在标注问题上的应用，
+                            title: 词向量之词袋模型详解top: falsecover: falsetoc: truemathjax: truedate: 2020-03-29 16:52:35password:summary:tags:categories:
+
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-03-26
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-04-04
                             </span>
                         <span class="publish-author">
                             
@@ -1184,25 +1383,6 @@
 </main>
 
 
-<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script>
-    MathJax.Hub.Config({
-        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
-    });
-</script>
-
-<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
-<!-- 代码语言 -->
-<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
-<!-- 代码块复制 -->
-<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
-<script type="text/javascript" src="/libs/codeBlock/clipboard.min.js"></script>
-<!-- 代码块收缩 -->
-<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script> 
-<!-- 代码块折行 -->
-<style type="text/css">code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }</style>
-
-
     <footer class="page-footer bg-color">
     <div class="container row center-align">
         <div class="col s12 m8 l8 copy-right">
@@ -1210,7 +1390,7 @@
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">28.6k</span>
+            <span class="white-color">28.7k</span>
             
 
             <br>

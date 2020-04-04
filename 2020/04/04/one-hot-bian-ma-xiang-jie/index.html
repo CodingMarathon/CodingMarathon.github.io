@@ -4,10 +4,9 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="Word2Vec详解, BUAA NLP DeepLearning Knowledge Graph">
+    <meta name="keywords" content="One-hot编码详解, BUAA NLP DeepLearning Knowledge Graph">
     <meta name="baidu-site-verification" content="YBVxcnPira">
-    <meta name="description" content="﻿本文主要转自word2vec 中的数学原理详解（一）目录和前言，原文讲的十分透彻但是是分开的，所以将它合并在一起，记录在自己的专栏里，防止忘记。
-">
+    <meta name="description" content="0.前言&amp;emsp;&amp;emsp;在回归，分类，聚类等机器学习算法中，各个特征之间的距离(相似度)计算是非常重要的，然而常用的距离计算都是在欧式空间内计算，例如计算余弦相似性。但是在欧式空间内计算相似性要求数据是连续的，有序的。在很多机器学习">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -15,7 +14,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Word2Vec详解 | CodingMarathon</title>
+    <title>One-hot编码详解 | CodingMarathon</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -328,13 +327,13 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/17.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/3.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        Word2Vec详解
+                        One-hot编码详解
                     </div>
                 </div>
             </div>
@@ -456,7 +455,7 @@
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-03-29
+                    2020-04-04
                 </div>
 
                 <div class="post-author info-break-policy">
@@ -470,14 +469,14 @@
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    57
+                    2.7k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    11 分
                 </div>
                 
                 
@@ -493,7 +492,158 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>﻿本文主要转自<a href="https://blog.csdn.net/itplus/article/details/37969519" target="_blank" rel="noopener">word2vec 中的数学原理详解（一）目录和前言</a>，原文讲的十分透彻但是是分开的，所以将它合并在一起，记录在自己的专栏里，防止忘记。<br><img src="https://img-blog.csdnimg.cn/20200329160551487.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/2020032916061275.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329160651619.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/2020032916070765.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329160721869.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/2020032916073880.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329160752449.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329160803667.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329160818107.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329160858512.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329160910158.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329160922970.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329160933282.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329160945841.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329160957816.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161008327.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161018612.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161031754.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161044304.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/2020032916105775.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161107588.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161118933.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161129956.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161141716.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161152682.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161238998.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161252728.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161306384.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161316534.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161328812.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161338498.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161349310.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161400810.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161412983.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161423118.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161434643.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161445284.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161457388.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161512147.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161523562.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161534737.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161544249.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161600234.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161622676.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161635434.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200329161645265.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+                <h1 id="0-前言"><a href="#0-前言" class="headerlink" title="0.前言"></a>0.前言</h1><p>&emsp;&emsp;在回归，分类，聚类等机器学习算法中，各个特征之间的距离(相似度)计算是非常重要的，然而常用的距离计算都是在欧式空间内计算，例如计算余弦相似性。但是在欧式空间内计算相似性要求数据是连续的，有序的。在很多机器学习的任务中，数据都是离散的，例如星期一，星期二，···，星期天，人的性别有男女，祖国有中国，美国，法国等。这些特征值并不是连续的，而是<strong>离散的，无序的</strong>。<br>如果要作为机器学习算法的输入，通常我们需要对其进行特征数字化。什么是特征数字化呢？例如：</p>
+<pre><code>       性别特征：[&quot;男&quot;，&quot;女&quot;]
+
+       祖国特征：[&quot;中国&quot;，&quot;美国，&quot;法国&quot;]
+
+       运动特征：[&quot;足球&quot;，&quot;篮球&quot;，&quot;羽毛球&quot;，&quot;乒乓球&quot;]</code></pre><p>   怎么将上诉特征数字化呢？有个人他的特征是 [“男”,”中国”,”乒乓球”]，怎么表示他呢？</p>
+<h1 id="1-独热编码"><a href="#1-独热编码" class="headerlink" title="1. 独热编码"></a>1. 独热编码</h1><p>&emsp;&emsp;独热编码即 One-Hot Encoding，又称一位有效编码，其方法是使用N位状态寄存器来对N个状态进行编码，每个状态都由他独立的寄存器位，<strong>并且在任意时候，其中只有一位有效</strong>。one-hot向量将类别变量转换为机器学习算法易于利用的一种形式的过程，这个向量的表示为一项属性的特征向量，也就是同一时间只有一个激活点（不为0），这个向量只有一个特征是不为0的，其他都是0，特别稀疏。</p>
+<h2 id="1-1-独热编码例子"><a href="#1-1-独热编码例子" class="headerlink" title="1.1 独热编码例子"></a>1.1 独热编码例子</h2><p><strong>例1：</strong><br>&emsp;&emsp;我们有四个样本，每个样本有三个特征，如图：<br>||特征1|特征2|特征3|<br>|–|–|–|–|<br>样本1|1|4|3|<br>样本2|2|3|2|<br>样本3|1|2|2|<br>样本4|2|1|1|<br>上诉样本特征1有两种可能的取值，若代表性别，比如1代表男性2代表女性，特征2有4种，可以代表另一种特征，同样的特征3也可以有他的含义。<br>独热编码保证每个样本中的单个特征只有1位数字为1，其余全部为0，编码后表示为：<br>||特征1|特征2|特征3|<br>|–|–|–|–|<br>样本1|01|1000|100|<br>样本2|10|0100|010|<br>样本3|01|0010|010|<br>样本4|10|0001|001|<br>对每个特征都使用独热编码表示，特征有2种取值就用两位表示，4种取值就用4位表示<br>对于<strong>前言</strong>中的例子，可以将特征与具体的特征对应：</p>
+<ul>
+<li>性别特征：[“男”,”女”] （这里只有两个特征，所以 N=2）：<br>男  =&gt;  10<br>女  =&gt;  01</li>
+<li>祖国特征：[“中国”，”美国，”法国”]（N=3）：<br>中国  =&gt;  100<br>美国  =&gt;  010<br>法国  =&gt;  001</li>
+<li>运动特征：[“足球”，”篮球”，”羽毛球”，”乒乓球”]（N=4）：<br>足球  =&gt;  1000<br>篮球  =&gt;  0100<br>羽毛球  =&gt;  0010<br>乒乓球  =&gt;  0001<br>所以，当一个样本为 [“男”,”中国”,”乒乓球”] 的时候，完整的特征数字化的结果为：<br>[1，0，1，0，0，0，0，0，1]<br>前两位代表<strong>性别</strong>，中间三位代表<strong>国家</strong>，后四位代表<strong>运动</strong>。</li>
+</ul>
+<h2 id="1-2-独热编码的优点"><a href="#1-2-独热编码的优点" class="headerlink" title="1.2 独热编码的优点"></a>1.2 独热编码的优点</h2><ul>
+<li>能够处理机器学习算法不好处理的离散特征值。</li>
+<li>在一定程度上增加了特征的维度，比如性别本身是一个特征，经过one hot编码以后，就变成了男或女两个特征。</li>
+<li>将离散特征的取值扩展到了欧式空间，离散特征的某个取值就对应欧式空间的某个点。将离散型特征使用one-hot编码，可以会让特征之间的距离计算更加合理。</li>
+</ul>
+<h2 id="1-3-独热编码的缺点"><a href="#1-3-独热编码的缺点" class="headerlink" title="1.3 独热编码的缺点"></a>1.3 独热编码的缺点</h2><ul>
+<li>如果原本的标签编码是有序的，那么one-hot编码就会丢失顺序信息。</li>
+<li>如果特征值的数目特别多，就会产生大量冗余的稀疏矩阵</li>
+<li>维度（单词）间的关系没有得到体现，每个单词都是一个维度，彼此相互独立，然而每个单词彼此无关这个特点明显不符合现实情况。大量的单词都是有关的。比如：<ul>
+<li>语义：girl和woman虽然用在不同年龄上，但指的都是女性。</li>
+<li>复数：word和words仅仅是复数和单数的差别。</li>
+<li>时态：buy和bought表达的都是“买”，但发生的时间不同。</li>
+<li>所以用one hot representation的编码方式，上面的特性都没有被考虑到。</li>
+</ul>
+</li>
+</ul>
+<h2 id="1-4-独热编码适用的情况"><a href="#1-4-独热编码适用的情况" class="headerlink" title="1.4 独热编码适用的情况"></a>1.4 独热编码适用的情况</h2><ul>
+<li>One Hot Encoding用来解决类别数据的离散值问题，如果特征是离散的，并且不用One Hot Encoding就可以很合理的计算出距离，那么就没必要进行One Hot Encoding。</li>
+<li>有些基于树的算法在处理变量时，并不是基于向量空间度量，数值只是类别符号，即没有偏序关系，所以不用One Hot Encoding，树模型不太需要One Hot Encoding，对于决策树来说，没有特征大小的概念，只有特征处于哪个部分的概念，One Hot Encoding的本质是增加树的深度。如GBDT处理高维稀疏矩阵的时候效果并不好，即使是低维的稀疏矩阵也未必比SVM好。</li>
+</ul>
+<h1 id="2-独热编码的实现"><a href="#2-独热编码的实现" class="headerlink" title="2. 独热编码的实现"></a>2. 独热编码的实现</h1><h2 id="2-1-python简单实现one-hot编码"><a href="#2-1-python简单实现one-hot编码" class="headerlink" title="2.1 python简单实现one-hot编码"></a>2.1 python简单实现one-hot编码</h2><pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+samples <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'I like playing basketball'</span><span class="token punctuation">,</span> <span class="token string">'I played football yesterday morning'</span><span class="token punctuation">]</span>
+token_index <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token keyword">for</span> sample <span class="token keyword">in</span> samples<span class="token punctuation">:</span>
+    <span class="token keyword">for</span> word <span class="token keyword">in</span> sample<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> word <span class="token operator">not</span> <span class="token keyword">in</span> token_index<span class="token punctuation">:</span>
+            token_index<span class="token punctuation">[</span>word<span class="token punctuation">]</span> <span class="token operator">=</span> len<span class="token punctuation">(</span>token_index<span class="token punctuation">)</span><span class="token operator">+</span><span class="token number">1</span>
+
+max_length <span class="token operator">=</span> <span class="token number">10</span>
+results <span class="token operator">=</span> np<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span>shape<span class="token operator">=</span><span class="token punctuation">(</span>len<span class="token punctuation">(</span>samples<span class="token punctuation">)</span><span class="token punctuation">,</span>
+                          max_length<span class="token punctuation">,</span>
+                          max<span class="token punctuation">(</span>token_index<span class="token punctuation">.</span>values<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">for</span> i<span class="token punctuation">,</span> sample <span class="token keyword">in</span> enumerate<span class="token punctuation">(</span>samples<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">for</span> j<span class="token punctuation">,</span> word <span class="token keyword">in</span> list<span class="token punctuation">(</span>enumerate<span class="token punctuation">(</span>sample<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token punctuation">:</span>max_length<span class="token punctuation">]</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span>j<span class="token punctuation">)</span>
+        index <span class="token operator">=</span> token_index<span class="token punctuation">.</span>get<span class="token punctuation">(</span>word<span class="token punctuation">)</span>
+        results<span class="token punctuation">[</span>i<span class="token punctuation">,</span> j<span class="token punctuation">,</span> index<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>results<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="2-2-sklearn"><a href="#2-2-sklearn" class="headerlink" title="2.2 sklearn"></a>2.2 sklearn</h2><p>通过sklearn的OneHotEncoder()来得到独热编码，但是只适用于数值型的数据。OneHotEncoder()的 feature_indices_ 可以知道哪几列对应哪个原来的特征。<br>使用 numpy.hstack() 将多次结果拼接起来得到变换后的结果<br>问题：不能直接编码字符串类型数据（LabelEncoder() + OneHotEncoder() 可实现，但需数据格式转换）</p>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">from</span> sklearn <span class="token keyword">import</span> preprocessing
+
+enc <span class="token operator">=</span> OneHotEncoder<span class="token punctuation">(</span><span class="token punctuation">)</span>
+enc<span class="token punctuation">.</span>fit<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"enc.n_values_ is:"</span><span class="token punctuation">,</span>enc<span class="token punctuation">.</span>n_values_<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"enc.feature_indices_ is:"</span><span class="token punctuation">,</span>enc<span class="token punctuation">.</span>feature_indices_<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>enc<span class="token punctuation">.</span>transform<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">.</span>toarray<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>enc<span class="token punctuation">.</span>transform<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">.</span>toarray<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>enc<span class="token punctuation">.</span>transform<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">.</span>toarray<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>输出的结果：</p>
+<pre class="line-numbers language-python"><code class="language-python">enc<span class="token punctuation">.</span>n_values_ <span class="token keyword">is</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token number">2</span> <span class="token number">3</span> <span class="token number">4</span><span class="token punctuation">]</span>          
+enc<span class="token punctuation">.</span>feature_indices_ <span class="token keyword">is</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token number">0</span> <span class="token number">2</span> <span class="token number">5</span> <span class="token number">9</span><span class="token punctuation">]</span>    <span class="token comment" spellcheck="true">#特征坐标</span>
+<span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">.</span> <span class="token number">0</span><span class="token punctuation">.</span> <span class="token number">0</span><span class="token punctuation">.</span> <span class="token number">1</span><span class="token punctuation">.</span> <span class="token number">0</span><span class="token punctuation">.</span> <span class="token number">0</span><span class="token punctuation">.</span> <span class="token number">1</span><span class="token punctuation">.</span> <span class="token number">0</span><span class="token punctuation">.</span> <span class="token number">0</span><span class="token punctuation">.</span><span class="token punctuation">]</span><span class="token punctuation">]</span>
+<span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">.</span> <span class="token number">1</span><span class="token punctuation">.</span> <span class="token number">0</span><span class="token punctuation">.</span> <span class="token number">1</span><span class="token punctuation">.</span> <span class="token number">0</span><span class="token punctuation">.</span> <span class="token number">0</span><span class="token punctuation">.</span> <span class="token number">1</span><span class="token punctuation">.</span> <span class="token number">0</span><span class="token punctuation">.</span> <span class="token number">0</span><span class="token punctuation">.</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>enc.n_values_ is ：每个特征值的特征数目，第一个特征数目是2，第二个特征数目是3，第三个特征数目是4。<br>enc.feature_indices_ is ：表明每个特征在one-hot向量中的坐标范围，0-2 是第一个特征，2-5就是第二个特征，5-9是第三个特征。<br>后面三个就是把特征值转换为 one-hot编码，我们可以对比结果看看one-hot差别。</p>
+<h2 id="2-3-Keras"><a href="#2-3-Keras" class="headerlink" title="2.3 Keras"></a>2.3 Keras</h2><pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">from</span> keras<span class="token punctuation">.</span>preprocessing<span class="token punctuation">.</span>text <span class="token keyword">import</span> Tokenizer
+samples <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'I like playing basketball'</span><span class="token punctuation">,</span> <span class="token string">'I played football yesterday morning'</span><span class="token punctuation">]</span>
+tokenizer <span class="token operator">=</span> Tokenizer<span class="token punctuation">(</span>num_words<span class="token operator">=</span><span class="token number">1000</span><span class="token punctuation">)</span>
+tokenizer<span class="token punctuation">.</span>fit_on_texts<span class="token punctuation">(</span>samples<span class="token punctuation">)</span>
+sequences <span class="token operator">=</span> tokenizer<span class="token punctuation">.</span>texts_to_sequences<span class="token punctuation">(</span>samples<span class="token punctuation">)</span>
+one_hot_results <span class="token operator">=</span> tokenizer<span class="token punctuation">.</span>text_to_matrix<span class="token punctuation">(</span>samples<span class="token punctuation">,</span> mode<span class="token operator">=</span><span class="token string">"binary"</span><span class="token punctuation">)</span>
+word_index <span class="token operator">=</span> tokenizer<span class="token punctuation">.</span>word_index
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Found %s unique tokens.'</span> <span class="token operator">%</span> len<span class="token punctuation">(</span>word_index<span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="2-4-tensorflow"><a href="#2-4-tensorflow" class="headerlink" title="2.4 tensorflow"></a>2.4 tensorflow</h2><p>官方文档：</p>
+<pre class="line-numbers language-python"><code class="language-python">tf<span class="token punctuation">.</span>one_hot<span class="token punctuation">(</span>
+    indices<span class="token punctuation">,</span>
+    depth<span class="token punctuation">,</span>
+    on_value<span class="token operator">=</span>None<span class="token punctuation">,</span>
+    off_value<span class="token operator">=</span>None<span class="token punctuation">,</span>
+    axis<span class="token operator">=</span>None<span class="token punctuation">,</span>
+    dtype<span class="token operator">=</span>None<span class="token punctuation">,</span>
+    name<span class="token operator">=</span>None
+<span class="token punctuation">)</span>
+Returns a one<span class="token operator">-</span>hot tensor<span class="token punctuation">(</span>返回一个one_hot张量<span class="token punctuation">)</span><span class="token punctuation">.</span>
+
+The locations represented by indices <span class="token keyword">in</span> indices take value on_value<span class="token punctuation">,</span> <span class="token keyword">while</span> all other locations take value off_value<span class="token punctuation">.</span>
+<span class="token punctuation">(</span>由indices指定的位置将被on_value填充<span class="token punctuation">,</span> 其他位置被off_value填充<span class="token punctuation">)</span><span class="token punctuation">.</span>
+
+on_value <span class="token operator">and</span> off_value must have matching data types<span class="token punctuation">.</span> If dtype <span class="token keyword">is</span> also provided<span class="token punctuation">,</span> they must be the same data type <span class="token keyword">as</span> specified by dtype<span class="token punctuation">.</span>
+<span class="token punctuation">(</span>on_value和off_value必须具有相同的数据类型<span class="token punctuation">)</span><span class="token punctuation">.</span>
+
+If on_value <span class="token keyword">is</span> <span class="token operator">not</span> provided<span class="token punctuation">,</span> it will default to the value <span class="token number">1</span> <span class="token keyword">with</span> type dtype<span class="token punctuation">.</span>
+
+If off_value <span class="token keyword">is</span> <span class="token operator">not</span> provided<span class="token punctuation">,</span> it will default to the value <span class="token number">0</span> <span class="token keyword">with</span> type dtype<span class="token punctuation">.</span>
+
+If the input indices <span class="token keyword">is</span> rank N<span class="token punctuation">,</span> the output will have rank N<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">.</span> The new axis <span class="token keyword">is</span> created at dimension axis <span class="token punctuation">(</span>default<span class="token punctuation">:</span> the new axis <span class="token keyword">is</span> appended at the end<span class="token punctuation">)</span><span class="token punctuation">.</span>
+<span class="token punctuation">(</span>如果indices是N维张量，那么函数输出将是N<span class="token operator">+</span><span class="token number">1</span>维张量<span class="token punctuation">,</span>默认在最后一维添加新的维度<span class="token punctuation">)</span><span class="token punctuation">.</span>
+
+If indices <span class="token keyword">is</span> a scalar the output shape will be a vector of length depth<span class="token punctuation">.</span>
+<span class="token punctuation">(</span>如果indices是一个标量<span class="token punctuation">,</span> 函数输出将是一个长度为depth的向量<span class="token punctuation">)</span>
+
+If indices <span class="token keyword">is</span> a vector of length features<span class="token punctuation">,</span> the output shape will be<span class="token punctuation">:</span>
+
+  features x depth <span class="token keyword">if</span> axis <span class="token operator">==</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">.</span>
+<span class="token punctuation">(</span>如果indices是一个长度为features的向量<span class="token punctuation">,</span>则默认输出一个features<span class="token operator">*</span>depth形状的张量<span class="token punctuation">)</span>
+  depth x features <span class="token keyword">if</span> axis <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">.</span>
+<span class="token punctuation">(</span>如果indices是一个长度为features的向量<span class="token punctuation">,</span>axis<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">,</span>则输出一个depth<span class="token operator">*</span>features形状的张量<span class="token punctuation">)</span>
+
+If indices <span class="token keyword">is</span> a matrix <span class="token punctuation">(</span>batch<span class="token punctuation">)</span> <span class="token keyword">with</span> shape <span class="token punctuation">[</span>batch<span class="token punctuation">,</span> features<span class="token punctuation">]</span><span class="token punctuation">,</span> the output shape will be<span class="token punctuation">:</span>
+
+  batch x features x depth <span class="token keyword">if</span> axis <span class="token operator">==</span> <span class="token operator">-</span><span class="token number">1</span>
+<span class="token punctuation">(</span>如果indices是一个形状为<span class="token punctuation">[</span>batch<span class="token punctuation">,</span> features<span class="token punctuation">]</span>的矩阵<span class="token punctuation">,</span>axis<span class="token operator">=</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">(</span>默认<span class="token punctuation">)</span><span class="token punctuation">,</span>则输出一个batch <span class="token operator">*</span> features <span class="token operator">*</span> depth形状的张量<span class="token punctuation">)</span>
+
+  batch x depth x features <span class="token keyword">if</span> axis <span class="token operator">==</span> <span class="token number">1</span>
+<span class="token punctuation">(</span>如果indices是一个形状为<span class="token punctuation">[</span>batch<span class="token punctuation">,</span> features<span class="token punctuation">]</span>的矩阵<span class="token punctuation">,</span>axis<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">,</span>则输出一个batch <span class="token operator">*</span> depth <span class="token operator">*</span> features形状的张量<span class="token punctuation">)</span>
+  depth x batch x features <span class="token keyword">if</span> axis <span class="token operator">==</span> <span class="token number">0</span>
+<span class="token punctuation">(</span>如果indices是一个形状为<span class="token punctuation">[</span>batch<span class="token punctuation">,</span> features<span class="token punctuation">]</span>的矩阵<span class="token punctuation">,</span>axis<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">,</span>则输出一个depth <span class="token operator">*</span> batch <span class="token operator">*</span> features形状的张量<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>实现：</p>
+<pre class="line-numbers language-python"><code class="language-python">indices <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span>  <span class="token comment" spellcheck="true">#输入数据(是个向量)需要编码的索引是[0,1,2]</span>
+depth <span class="token operator">=</span> <span class="token number">3</span>
+tf<span class="token punctuation">.</span>one_hot<span class="token punctuation">(</span>indices<span class="token punctuation">,</span> depth<span class="token punctuation">)</span>  <span class="token comment" spellcheck="true"># output: [3 x 3]</span>
+<span class="token comment" spellcheck="true"># [[1., 0., 0.],</span>
+<span class="token comment" spellcheck="true">#  [0., 1., 0.],</span>
+<span class="token comment" spellcheck="true">#  [0., 0., 1.]]</span>
+
+indices <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span>  <span class="token comment" spellcheck="true">#输入数据(是个向量)的需要编码的索引是[0,2,-1,1]</span>
+depth <span class="token operator">=</span> <span class="token number">3</span>
+tf<span class="token punctuation">.</span>one_hot<span class="token punctuation">(</span>indices<span class="token punctuation">,</span> depth<span class="token punctuation">,</span>
+           on_value<span class="token operator">=</span><span class="token number">5.0</span><span class="token punctuation">,</span> off_value<span class="token operator">=</span><span class="token number">0.0</span><span class="token punctuation">,</span>
+           axis<span class="token operator">=</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>  <span class="token comment" spellcheck="true"># output: [4 x 3]</span>
+<span class="token comment" spellcheck="true"># [[5.0, 0.0, 0.0],  # one_hot(0)  对位置0处的数据进行one_hot编码</span>
+<span class="token comment" spellcheck="true">#  [0.0, 0.0, 5.0],  # one_hot(2)  对位置2处的数据进行one_hot编码</span>
+<span class="token comment" spellcheck="true">#  [0.0, 0.0, 0.0],  # one_hot(-1) 对位置-1处的数据进行one_hot编码</span>
+<span class="token comment" spellcheck="true">#  [0.0, 5.0, 0.0]]  # one_hot(1)  对位置1处的数据进行one_hot编码</span>
+
+indices <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">]</span>   <span class="token comment" spellcheck="true">#输入数据是个矩阵</span>
+depth <span class="token operator">=</span> <span class="token number">3</span>
+tf<span class="token punctuation">.</span>one_hot<span class="token punctuation">(</span>indices<span class="token punctuation">,</span> depth<span class="token punctuation">,</span>
+           on_value<span class="token operator">=</span><span class="token number">1.0</span><span class="token punctuation">,</span> off_value<span class="token operator">=</span><span class="token number">0.0</span><span class="token punctuation">,</span>
+           axis<span class="token operator">=</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>  <span class="token comment" spellcheck="true"># output: [2 x 2 x 3]</span>
+<span class="token comment" spellcheck="true"># [[[1.0, 0.0, 0.0],   # one_hot(0)  对位置(0,0)处的数据进行one_hot编码</span>
+<span class="token comment" spellcheck="true">#   [0.0, 0.0, 1.0]],  # one_hot(2)  对位置(0,2)处的数据进行one_hot编码</span>
+<span class="token comment" spellcheck="true">#  [[0.0, 1.0, 0.0],   # one_hot(1)  对位置(1,1)处的数据进行one_hot编码</span>
+<span class="token comment" spellcheck="true">#   [0.0, 0.0, 0.0]]]  # one_hot(-1) 对位置(1,-1)处的数据进行one_hot编码</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="3-NLP中的独热表示"><a href="#3-NLP中的独热表示" class="headerlink" title="3 NLP中的独热表示"></a>3 NLP中的独热表示</h1><p>独热表示以往在NLP中很流行，但是随着TF-IDF以及词向量的出现，已经渐渐变得不再适用了，主要的缺点：</p>
+<ul>
+<li>不考虑词与词之间的顺序（文本中词的顺序信息也是很重要的）；</li>
+<li>假设词与词相互独立，每个词之间的距离都是$\sqrt 2$。（在大多数情况下，词与词是相互影响的）；</li>
+<li>它得到的 特征是离散稀疏的，词表多少个单词，向量的维度就是多少。 (这个问题最严重)。</li>
+</ul>
 
             </div>
             <hr />
@@ -652,9 +802,9 @@
             <br/>
             <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
                   property="dct:title" rel="dct:type">
-                    《Word2Vec详解》
+                    《One-hot编码详解》
                 </span> 由
-            <a xmlns:cc="http://creativecommons.org/ns#" href="/2020/03/29/word2vec-xiang-jie/" property="cc:attributionName"
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2020/04/04/one-hot-bian-ma-xiang-jie/" property="cc:attributionName"
                rel="cc:attributionURL">
                 CodingMarathon
             </a> 采用
@@ -695,7 +845,7 @@
         repo: 'CodingMarathon.github.io',
         owner: 'CodingMarathon',
         admin: "CodingMarathon",
-        id: '2020/03/29/word2vec-xiang-jie/',
+        id: '2020/04/04/one-hot-bian-ma-xiang-jie/',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -982,24 +1132,24 @@
             <div class="article-badge left-badge text-color">
                 <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2020/04/03/gensim-xun-lian-word2vec-ci-xiang-liang/">
+                <a href="/2020/04/04/tf-idf-xiang-jie/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="gensim训练word2vec词向量">
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="TF-IDF详解">
                         
-                        <span class="card-title">gensim训练word2vec词向量</span>
+                        <span class="card-title">TF-IDF详解</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            0 前言《词向量之Word2Vec数学原理以及源代码详解》很好的讲解了Word2Vec的原理以及一些源码的解读，Word2Vec的词向量有两种方式实现，一种是谷歌大佬们自己写的word2vec，还有一个是gensim库，由于大多数人使用的是
+                            0 前言前面介绍了词向量的One-Hot模型以及词袋模型，这都是为了将离散符号表示的文本转换成数字表示，以提供给后续机器学习算法的使用。词向量之One-Hot编码详解词向量之词袋模型（BOW）详解本文主要介绍另一种词向量的表示方法：TF-I
                         
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="fa fa-clock-o fa-fw icon-date"></i>2020-04-03
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2020-04-04
                         </span>
                         <span class="publish-author">
                             
@@ -1016,24 +1166,24 @@
                 下一篇&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/03/26/crf/">
+                <a href="/2020/04/03/gensim-xun-lian-word2vec-ci-xiang-liang/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="CRF详解">
+                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="gensim训练word2vec词向量">
                         
-                        <span class="card-title">CRF详解</span>
+                        <span class="card-title">gensim训练word2vec词向量</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            0 前言​        条件随机场（conditional random field，CRF）是给定一组输入随机变量条件下另一组输出随机变量的条件概率分布模型，其特点是假设输出随机变量构成马尔科夫随机场。本文主要讨论它在标注问题上的应用，
+                            0 前言《词向量之Word2Vec数学原理以及源代码详解》很好的讲解了Word2Vec的原理以及一些源码的解读，Word2Vec的词向量有两种方式实现，一种是谷歌大佬们自己写的word2vec，还有一个是gensim库，由于大多数人使用的是
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-03-26
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-04-03
                             </span>
                         <span class="publish-author">
                             

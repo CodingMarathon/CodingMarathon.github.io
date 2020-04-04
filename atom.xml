@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://CodingMarathon.github.io/"/>
-  <updated>2020-04-03T11:52:17.538Z</updated>
+  <updated>2020-04-04T11:53:08.336Z</updated>
   <id>https://CodingMarathon.github.io/</id>
   
   <author>
@@ -17,11 +17,11 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>gensim训练word2vec词向量</title>
-    <link href="https://CodingMarathon.github.io/2020/04/03/gensim-xun-lian-word2vec-ci-xiang-liang/"/>
-    <id>https://CodingMarathon.github.io/2020/04/03/gensim-xun-lian-word2vec-ci-xiang-liang/</id>
-    <published>2020-04-03T11:51:08.000Z</published>
-    <updated>2020-04-03T11:52:17.538Z</updated>
+    <title>词袋模型详解</title>
+    <link href="https://CodingMarathon.github.io/2020/04/04/ci-dai-mo-xing-xiang-jie/"/>
+    <id>https://CodingMarathon.github.io/2020/04/04/ci-dai-mo-xing-xiang-jie/</id>
+    <published>2020-04-04T11:52:21.000Z</published>
+    <updated>2020-04-04T11:53:08.336Z</updated>
     
     <summary type="html">
     
@@ -29,8 +29,73 @@
       
         
         
-          &lt;p&gt;﻿@&lt;a href=&quot;目录&quot;&gt;TOC&lt;/a&gt;&lt;/p&gt;
-&lt;h1 id=&quot;0-前言&quot;&gt;&lt;a href=&quot;#0-前言&quot; class=&quot;headerlink&quot; title=&quot;0 前言&quot;&gt;&lt;/a&gt;0 前言&lt;/h1&gt;&lt;p&gt;&lt;a
+          &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>TF-IDF详解</title>
+    <link href="https://CodingMarathon.github.io/2020/04/04/tf-idf-xiang-jie/"/>
+    <id>https://CodingMarathon.github.io/2020/04/04/tf-idf-xiang-jie/</id>
+    <published>2020-04-04T11:49:29.000Z</published>
+    <updated>2020-04-04T11:51:50.419Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;0-前言&quot;&gt;&lt;a href=&quot;#0-前言&quot; class=&quot;headerlink&quot; title=&quot;0 前言&quot;&gt;&lt;/a&gt;0
+        
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>One-hot编码详解</title>
+    <link href="https://CodingMarathon.github.io/2020/04/04/one-hot-bian-ma-xiang-jie/"/>
+    <id>https://CodingMarathon.github.io/2020/04/04/one-hot-bian-ma-xiang-jie/</id>
+    <published>2020-04-04T11:49:02.000Z</published>
+    <updated>2020-04-04T11:50:39.635Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;0-前言&quot;&gt;&lt;a href=&quot;#0-前言&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>gensim训练word2vec词向量</title>
+    <link href="https://CodingMarathon.github.io/2020/04/03/gensim-xun-lian-word2vec-ci-xiang-liang/"/>
+    <id>https://CodingMarathon.github.io/2020/04/03/gensim-xun-lian-word2vec-ci-xiang-liang/</id>
+    <published>2020-04-03T11:51:08.000Z</published>
+    <updated>2020-04-04T11:45:02.606Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;0-前言&quot;&gt;&lt;a href=&quot;#0-前言&quot; class=&quot;headerlink&quot; title=&quot;0 前言&quot;&gt;&lt;/a&gt;0 前言&lt;/h1&gt;&lt;p&gt;&lt;a
         
       
     
@@ -62,11 +127,11 @@
   </entry>
   
   <entry>
-    <title>crf</title>
+    <title>CRF详解</title>
     <link href="https://CodingMarathon.github.io/2020/03/26/crf/"/>
     <id>https://CodingMarathon.github.io/2020/03/26/crf/</id>
     <published>2020-03-26T10:22:49.000Z</published>
-    <updated>2020-03-26T10:25:18.024Z</updated>
+    <updated>2020-04-04T11:45:30.059Z</updated>
     
     <summary type="html">
     
@@ -74,8 +139,7 @@
       
         
         
-          &lt;p&gt;﻿@&lt;a href=&quot;目录&quot;&gt;toc&lt;/a&gt;&lt;/p&gt;
-&lt;h1 id=&quot;0-前言&quot;&gt;&lt;a href=&quot;#0-前言&quot; class=&quot;headerlink&quot; title=&quot;0 前言&quot;&gt;&lt;/a&gt;0 前言&lt;/h1&gt;&lt;p&gt;​        条件随机场（conditional
+          &lt;h1 id=&quot;0-前言&quot;&gt;&lt;a href=&quot;#0-前言&quot; class=&quot;headerlink&quot; title=&quot;0 前言&quot;&gt;&lt;/a&gt;0 前言&lt;/h1&gt;&lt;p&gt;​        条件随机场（conditional random
         
       
     
@@ -85,11 +149,11 @@
   </entry>
   
   <entry>
-    <title>hmm</title>
+    <title>HMM详解</title>
     <link href="https://CodingMarathon.github.io/2020/03/26/hmm/"/>
     <id>https://CodingMarathon.github.io/2020/03/26/hmm/</id>
     <published>2020-03-26T10:20:39.000Z</published>
-    <updated>2020-03-26T10:21:53.052Z</updated>
+    <updated>2020-04-04T11:45:48.830Z</updated>
     
     <summary type="html">
     
@@ -97,8 +161,7 @@
       
         
         
-          &lt;p&gt;@&lt;a href=&quot;目录&quot;&gt;TOC&lt;/a&gt;&lt;/p&gt;
-&lt;h1 id=&quot;1-隐马尔科夫模型&quot;&gt;&lt;a href=&quot;#1-隐马尔科夫模型&quot; class=&quot;headerlink&quot; title=&quot;1 隐马尔科夫模型&quot;&gt;&lt;/a&gt;1
+          &lt;h1 id=&quot;1-隐马尔科夫模型&quot;&gt;&lt;a href=&quot;#1-隐马尔科夫模型&quot; class=&quot;headerlink&quot; title=&quot;1 隐马尔科夫模型&quot;&gt;&lt;/a&gt;1
         
       
     

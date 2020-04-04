@@ -2,9 +2,44 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://CodingMarathon.github.io/2020/04/04/ci-dai-mo-xing-xiang-jie/</loc>
+    
+    <lastmod>2020-04-04T11:53:08.336Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://CodingMarathon.github.io/2020/04/04/tf-idf-xiang-jie/</loc>
+    
+    <lastmod>2020-04-04T11:51:50.419Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://CodingMarathon.github.io/2020/04/04/one-hot-bian-ma-xiang-jie/</loc>
+    
+    <lastmod>2020-04-04T11:50:39.635Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://CodingMarathon.github.io/2020/03/26/hmm/</loc>
+    
+    <lastmod>2020-04-04T11:45:48.830Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://CodingMarathon.github.io/2020/03/26/crf/</loc>
+    
+    <lastmod>2020-04-04T11:45:30.059Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://CodingMarathon.github.io/2020/04/03/gensim-xun-lian-word2vec-ci-xiang-liang/</loc>
     
-    <lastmod>2020-04-03T11:52:17.538Z</lastmod>
+    <lastmod>2020-04-04T11:45:02.606Z</lastmod>
     
   </url>
   
@@ -12,20 +47,6 @@
     <loc>https://CodingMarathon.github.io/2020/03/29/word2vec-xiang-jie/</loc>
     
     <lastmod>2020-03-29T08:54:02.503Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://CodingMarathon.github.io/2020/03/26/crf/</loc>
-    
-    <lastmod>2020-03-26T10:25:18.024Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://CodingMarathon.github.io/2020/03/26/hmm/</loc>
-    
-    <lastmod>2020-03-26T10:21:53.052Z</lastmod>
     
   </url>
   

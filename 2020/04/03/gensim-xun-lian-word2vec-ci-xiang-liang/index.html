@@ -6,8 +6,7 @@
     <meta charset="utf-8">
     <meta name="keywords" content="gensim训练word2vec词向量, BUAA NLP DeepLearning Knowledge Graph">
     <meta name="baidu-site-verification" content="YBVxcnPira">
-    <meta name="description" content="﻿@TOC
-0 前言《词向量之Word2Vec数学原理以及源代码详解》很好的讲解了Word2Vec的原理以及一些源码的解读，Word2Vec的词向量有两种方式实现，一种是谷歌大佬们自己写的word2vec，还有一个是gensim库，由于大多">
+    <meta name="description" content="0 前言《词向量之Word2Vec数学原理以及源代码详解》很好的讲解了Word2Vec的原理以及一些源码的解读，Word2Vec的词向量有两种方式实现，一种是谷歌大佬们自己写的word2vec，还有一个是gensim库，由于大多数人使用的是">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -328,7 +327,7 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/13.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -493,8 +492,7 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>﻿@<a href="目录">TOC</a></p>
-<h1 id="0-前言"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言</h1><p><a href="https://blog.csdn.net/Elenstone/article/details/105180518" target="_blank" rel="noopener">《词向量之Word2Vec数学原理以及源代码详解》</a>很好的讲解了Word2Vec的原理以及一些源码的解读，Word2Vec的词向量有两种方式实现，一种是谷歌大佬们自己写的word2vec，还有一个是gensim库，由于大多数人使用的是python，所以使用gensim库的人很多。本文会详细介绍gensim里的word2vec模型，gensim包含的其他模型不介绍。</p>
+                <h1 id="0-前言"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言</h1><p><a href="https://blog.csdn.net/Elenstone/article/details/105180518" target="_blank" rel="noopener">《词向量之Word2Vec数学原理以及源代码详解》</a>很好的讲解了Word2Vec的原理以及一些源码的解读，Word2Vec的词向量有两种方式实现，一种是谷歌大佬们自己写的word2vec，还有一个是gensim库，由于大多数人使用的是python，所以使用gensim库的人很多。本文会详细介绍gensim里的word2vec模型，gensim包含的其他模型不介绍。</p>
 <h1 id="1-gensim库"><a href="#1-gensim库" class="headerlink" title="1 gensim库"></a>1 gensim库</h1><p>  Gensim（<a href="http://pypi.python.org/pypi/gensim）是一款开源的第三方Python工具包，用于从原始的非结构化的文本中，无监督地学习到文本隐层的主题向量表达。" target="_blank" rel="noopener">http://pypi.python.org/pypi/gensim）是一款开源的第三方Python工具包，用于从原始的非结构化的文本中，无监督地学习到文本隐层的主题向量表达。</a> 主要用于主题建模和文档相似性处理，它支持包括TF-IDF，LSA，LDA，和word2vec在内的多种主题模型算法。Gensim在诸如获取单词的词向量等任务中非常有用。</p>
 <h2 id="1-1-gensim-models-word2vec-API概述"><a href="#1-1-gensim-models-word2vec-API概述" class="headerlink" title="1.1 gensim.models.word2vec API概述"></a>1.1 gensim.models.word2vec API概述</h2><p>首先使用<code>pip install gensim</code>安装gensim库。<br>然后倒入word2vec模块<code>from gensim.models.word2vec</code>。==注意这里倒入的是小写的word2vec这个<code>.py</code>文件，其中大写的Word2Vec模型实现在这个文件中，使用模型时需要使用语句<code>word2vec.Word2Vec()</code>来创建模型。==</p>
 <pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Word2Vec</span><span class="token punctuation">(</span>utils<span class="token punctuation">.</span>SaveLoad<span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -1051,37 +1049,34 @@ seg_sentences<span aria-hidden="true" class="line-numbers-rows"><span></span><sp
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-dot-circle-o"></i>&nbsp;本篇
-            </div>
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2020/04/03/gensim-xun-lian-word2vec-ci-xiang-liang/">
+                <a href="/2020/04/04/one-hot-bian-ma-xiang-jie/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="gensim训练word2vec词向量">
+                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="One-hot编码详解">
                         
-                        <span class="card-title">gensim训练word2vec词向量</span>
+                        <span class="card-title">One-hot编码详解</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            ﻿@TOC
-0 前言《词向量之Word2Vec数学原理以及源代码详解》很好的讲解了Word2Vec的原理以及一些源码的解读，Word2Vec的词向量有两种方式实现，一种是谷歌大佬们自己写的word2vec，还有一个是gensim库，由于大多
+                            0.前言&emsp;&emsp;在回归，分类，聚类等机器学习算法中，各个特征之间的距离(相似度)计算是非常重要的，然而常用的距离计算都是在欧式空间内计算，例如计算余弦相似性。但是在欧式空间内计算相似性要求数据是连续的，有序的。在很多机器学习
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-04-03
-                            </span>
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2020-04-04
+                        </span>
                         <span class="publish-author">
                             
                         </span>
                     </div>
                 </div>
-
                 
             </div>
         </div>
@@ -1096,7 +1091,7 @@ seg_sentences<span aria-hidden="true" class="line-numbers-rows"><span></span><sp
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="Word2Vec详解">
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="Word2Vec详解">
                         
                         <span class="card-title">Word2Vec详解</span>
                     </div>
@@ -1287,7 +1282,7 @@ seg_sentences<span aria-hidden="true" class="line-numbers-rows"><span></span><sp
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">21.8k</span>
+            <span class="white-color">28.6k</span>
             
 
             <br>

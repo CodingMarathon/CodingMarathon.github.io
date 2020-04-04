@@ -4,10 +4,9 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="crf, BUAA NLP DeepLearning Knowledge Graph">
+    <meta name="keywords" content="CRF详解, BUAA NLP DeepLearning Knowledge Graph">
     <meta name="baidu-site-verification" content="YBVxcnPira">
-    <meta name="description" content="﻿@toc
-0 前言​        条件随机场（conditional random field，CRF）是给定一组输入随机变量条件下另一组输出随机变量的条件概率分布模型，其特点是假设输出随机变量构成马尔科夫随机场。本文主要讨论它在标注问">
+    <meta name="description" content="0 前言​        条件随机场（conditional random field，CRF）是给定一组输入随机变量条件下另一组输出随机变量的条件概率分布模型，其特点是假设输出随机变量构成马尔科夫随机场。本文主要讨论它在标注问题上的应用，">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -15,7 +14,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>crf | CodingMarathon</title>
+    <title>CRF详解 | CodingMarathon</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -328,13 +327,13 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/6.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/17.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        crf
+                        CRF详解
                     </div>
                 </div>
             </div>
@@ -493,8 +492,7 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>﻿@<a href="目录">toc</a></p>
-<h1 id="0-前言"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言</h1><p>​        条件随机场（conditional random field，CRF）是给定一组输入<strong>随机变量</strong>条件下另一组输出<strong>随机变量</strong>的条件概率分布模型，其特点是假设输出随机变量构成马尔科夫随机场。本文主要讨论它在标注问题上的应用，因此主要讲<strong>线性链（linear chain）条件随机场</strong>，这时问题变成了由输入序列对输出序列预测的判别模型，形式为对数线性模型，学习模型参数的方法通常是极大似然估计或者正则化的极大似然估计。</p>
+                <h1 id="0-前言"><a href="#0-前言" class="headerlink" title="0 前言"></a>0 前言</h1><p>​        条件随机场（conditional random field，CRF）是给定一组输入<strong>随机变量</strong>条件下另一组输出<strong>随机变量</strong>的条件概率分布模型，其特点是假设输出随机变量构成马尔科夫随机场。本文主要讨论它在标注问题上的应用，因此主要讲<strong>线性链（linear chain）条件随机场</strong>，这时问题变成了由输入序列对输出序列预测的判别模型，形式为对数线性模型，学习模型参数的方法通常是极大似然估计或者正则化的极大似然估计。</p>
 <p>​        本文参考李航老师的《统计学习方法》,加上自己的理解。</p>
 <h1 id="1-马尔科夫随机场"><a href="#1-马尔科夫随机场" class="headerlink" title="1 马尔科夫随机场"></a>1 马尔科夫随机场</h1><p>​        概率无向图模型（probabilistic undirected graphical model），又称为马尔科夫随机场（Markov random field），是一个可以由无向图表示的联合概率分布。</p>
 <h2 id="1-1-概率图模型的定义"><a href="#1-1-概率图模型的定义" class="headerlink" title="1.1 概率图模型的定义"></a>1.1 概率图模型的定义</h2><p>​         图是由节点及连接节点的边组成的集合。节点和边分别记作$v$和$e$，节点和边的集合分别记作$V$和$E$，图记作$G=(V,E)$。无向图是指边没有方向的图，有向图是指边有方向的图。<br><img src="https://img-blog.csdnimg.cn/20200323164917172.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0VsZW5zdG9uZQ==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>        概率图模型是用图来表示<strong>概率分布</strong>，设有联合概率分布$P(\boldsymbol{Y})$，$\boldsymbol{Y}$是一组随机变量。用图$G=(V,E)$来表示概率分布$P(\boldsymbol{Y})$。在图$G$中，节点$v \in V $表示一个随机变量$Y_v$，则$\boldsymbol{Y}=(Y_v)_{v \in V}$；边$e \in E$表示随机变量之间的概率依赖关系。常用的概率图模型分为两类：</p>
@@ -845,7 +843,7 @@ $$
             <br/>
             <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
                   property="dct:title" rel="dct:type">
-                    《crf》
+                    《CRF详解》
                 </span> 由
             <a xmlns:cc="http://creativecommons.org/ns#" href="/2020/03/26/crf/" property="cc:attributionName"
                rel="cc:attributionURL">
@@ -1179,7 +1177,7 @@ $$
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="Word2Vec详解">
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="Word2Vec详解">
                         
                         <span class="card-title">Word2Vec详解</span>
                     </div>
@@ -1214,17 +1212,16 @@ $$
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="hmm">
+                        <img src="/medias/featureimages/27.jpg" class="responsive-img" alt="HMM详解">
                         
-                        <span class="card-title">hmm</span>
+                        <span class="card-title">HMM详解</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            @TOC
-1 隐马尔科夫模型本文主要介绍NLP领域中很重要的一个模型——隐马尔科夫模型（Hidden Markov Model，HMM）。希望读完本文后，大家能够清楚地理解HMM并能够应用到实际中。  
-隐马尔科夫模型是结构最简单的动态贝叶
+                            1 隐马尔科夫模型本文主要介绍NLP领域中很重要的一个模型——隐马尔科夫模型（Hidden Markov Model，HMM）。希望读完本文后，大家能够清楚地理解HMM并能够应用到实际中。  
+隐马尔科夫模型是结构最简单的动态贝叶斯网（dy
                         
                     </div>
                     <div class="publish-info">
@@ -1406,7 +1403,7 @@ $$
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">21.8k</span>
+            <span class="white-color">28.6k</span>
             
 
             <br>
